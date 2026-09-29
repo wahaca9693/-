@@ -1,78 +1,64 @@
 import React, { useEffect, useState } from 'react';
 import { Logo } from './Logo';
+import { ShieldCheck } from 'lucide-react';
 
 interface LoadingScreenProps {
   onFinish?: () => void;
   minDuration?: number;
 }
 
-export const LoadingScreen: React.FC<LoadingScreenProps> = ({
-  onFinish,
-  minDuration = 1800,
-}) => {
-  const [progress, setProgress] = useState(15);
+export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinish, minDuration = 1500 }) => {
+  const [progress, setProgress] = useState(12);
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setProgress(45), 300);
-    const timer2 = setTimeout(() => setProgress(85), 900);
-    const timer3 = setTimeout(() => setProgress(100), minDuration - 400);
-
-    const fadeTimer = setTimeout(() => {
-      setIsFading(true);
-    }, minDuration);
-
-    const finishTimer = setTimeout(() => {
-      onFinish?.();
-    }, minDuration + 500);
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      clearTimeout(fadeTimer);
-      clearTimeout(finishTimer);
-    };
+    const timers = [
+      setTimeout(() => setProgress(46), 280),
+      setTimeout(() => setProgress(84), 820),
+      setTimeout(() => setProgress(100), Math.max(0, minDuration - 300)),
+      setTimeout(() => setIsFading(true), minDuration),
+      setTimeout(() => onFinish?.(), minDuration + 450),
+    ];
+    return () => timers.forEach(clearTimeout);
   }, [minDuration, onFinish]);
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[100] grid place-items-center bg-canvas transition-opacity duration-500 ${
         isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
-      {/* Background Ambient Gold Halos */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-[#d4af37]/10 blur-[100px] pointer-events-none" />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full bg-[#ffd700]/5 blur-[80px] pointer-events-none" />
+      {/* هالة الشعاع */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[26rem] h-[26rem] rounded-full blur-3xl pointer-events-none opacity-60 animate-beacon"
+        style={{ background: 'radial-gradient(circle, var(--mnr-brand) 0%, var(--mnr-brand-2) 40%, transparent 70%)' }}
+      />
 
-      {/* Main Logo Showcase */}
-      <div className="relative z-10 flex flex-col items-center gap-6 animate-pulse">
+      <div className="relative z-10 flex flex-col items-center gap-6 text-center px-6">
         <Logo size="xl" showSubtitle={false} />
 
-        <div className="flex flex-col items-center text-center space-y-2">
-          <h1 className="text-3xl font-extrabold gold-gradient-text tracking-widest drop-shadow-[0_4px_20px_rgba(212,175,55,0.4)]">
-            M.N.R
-          </h1>
-          <p className="text-[#e5e2e1] text-base font-semibold tracking-wide">
-            مركز المنار للموبايل
-          </p>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#18150c] border border-[#d4af37]/30 text-xs text-[#ffd700]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#ffd700] animate-ping" />
-            <span>الوكيل المعتمد والضمان الذهبي</span>
-          </div>
+        <div className="space-y-2">
+          <h1 className="mnr-h1 text-3xl sm:text-4xl mnr-gradient-text tracking-widest">M.N.R</h1>
+          <p className="mnr-h2 text-base text-ink">مركز المنار للموبايل</p>
+          <span className="mnr-badge mnr-badge-gold">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            الوكيل المعتمد والضمان الذهبي
+          </span>
         </div>
 
-        {/* Golden Progress Bar */}
-        <div className="w-56 mt-4">
-          <div className="w-full h-1 bg-[#1a1a1a] rounded-full overflow-hidden border border-[#d4af37]/20">
+        <div className="w-64">
+          <div className="h-1.5 w-full rounded-full bg-surface-2 border border-line overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-[#b8860b] via-[#ffd700] to-[#d4af37] transition-all duration-300 rounded-full shadow-[0_0_12px_rgba(255,215,0,0.6)]"
-              style={{ width: `${progress}%` }}
+              className="h-full rounded-full transition-all duration-500 ease-out"
+              style={{
+                width: `${progress}%`,
+                backgroundImage: 'linear-gradient(90deg, var(--mnr-brand), var(--mnr-brand-2), var(--mnr-gold))',
+              }}
             />
           </div>
-          <div className="flex justify-between items-center text-[11px] text-[#99907c] mt-2 font-mono" dir="ltr">
-            <span>{progress}%</span>
-            <span className="font-sans text-[#d4af37]">جاري تجهيز المتجر الفاخر...</span>
+          <div className="mt-2.5 flex items-center justify-between text-[11px] text-ink-3">
+            <span className="mnr-num">{progress}%</span>
+            <span>جاري تجهيز المتجر…</span>
           </div>
         </div>
       </div>

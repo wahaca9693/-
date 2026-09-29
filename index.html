@@ -1,46 +1,58 @@
 <!doctype html>
-<html lang="ar" dir="rtl" class="dark">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>M.N.R – مركز المنار للموبايل</title>
-    <meta name="description" content="متجر M.N.R الرسمي لبيع أحدث الهواتف الذكية الأصلية، السماعات، الشواحن، البطاريات، والإكسسوارات الفاخرة مع خدمة التوصيل لكافة محافظات العراق بـ 5,000 د.ع وضمان ذهبي معتمد." />
-    <meta property="og:title" content="M.N.R – مركز المنار للموبايل" />
-    <meta property="og:description" content="متجر M.N.R الرسمي لبيع أحدث الهواتف الذكية الأصلية، السماعات، الشواحن، البطاريات، والإكسسوارات الفاخرة مع خدمة التوصيل لكافة محافظات العراق بـ 5,000 د.ع وضمان ذهبي معتمد." />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>M.N.R – مركز المنار للموبايل | متجر الهواتف والإكسسوارات في العراق</title>
+    <meta
+      name="description"
+      content="متجر M.N.R الرسمي لبيع أحدث الهواتف الذكية الأصلية، السماعات، الشواحن، البطاريات، والإكسسوارات مع توصيل لكافة محافظات العراق بـ 5,000 د.ع، الدفع كاش عند الاستلام، وكفالة 12 شهراً."
+    />
+    <meta name="keywords" content="متجر موبايل, هواتف, العراق, آيفون, سامسونج, شواحن, سماعات, الدفع كاش" />
+
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ar_IQ" />
+    <meta property="og:title" content="M.N.R – مركز المنار للموبايل" />
+    <meta
+      property="og:description"
+      content="أحدث الهواتف الذكية الأصلية والإكسسوارات، توصيل 5,000 د.ع لكافة المحافظات، الدفع كاش عند الاستلام."
+    />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#09090b" />
+    <meta name="theme-color" content="#070a12" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f2f5fb" media="(prefers-color-scheme: light)" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
-    <style>
-      :root {
-        color-scheme: dark;
-      }
-      body {
-        background-color: #09090b;
-        color: #f4f4f5;
-        font-family: 'Cairo', 'Tajawal', system-ui, -apple-system, sans-serif;
-        overflow-x: hidden;
-      }
-      /* Custom clean scrollbar */
-      ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #09090b;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #27272a;
-        border-radius: 9999px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #d4af37;
-      }
-    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Inter:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--
+      تجهيز الثيم قبل أول رسم للصفحة (Pre-paint).
+      يمنع وميض الألوان عند إعادة تحميل الصفحة بالوضع الفاتح أو الداكن.
+    -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('mnr-theme');
+          var prefersDark =
+            window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var theme = saved === 'light' || saved === 'dark' ? saved : prefersDark ? 'dark' : 'light';
+          document.documentElement.classList.toggle('dark', theme === 'dark');
+          document.documentElement.style.backgroundColor =
+            theme === 'dark' ? '#070a12' : '#f2f5fb';
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
-  <body class="bg-[#09090b] text-[#f4f4f5] selection:bg-[#d4af37]/25 selection:text-[#ffd700]">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

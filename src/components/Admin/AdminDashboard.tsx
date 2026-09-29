@@ -254,13 +254,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
 
   const statusBadge = (st: OrderStatus) => {
     const map: Record<OrderStatus, { text: string; bg: string; color: string }> = {
-      new: { text: 'جديد', bg: 'bg-[#ffd700]/20', color: 'text-[#ffd700]' },
-      reviewing: { text: 'قيد المراجعة', bg: 'bg-[#0071e3]/20', color: 'text-[#2997ff]' },
-      confirmed: { text: 'تم التأكيد', bg: 'bg-[#bf5af2]/20', color: 'text-[#bf5af2]' },
-      processing: { text: 'قيد التجهيز', bg: 'bg-[#ff9f0a]/20', color: 'text-[#ff9f0a]' },
-      shipped: { text: 'خرج للتوصيل', bg: 'bg-[#64d2ff]/20', color: 'text-[#64d2ff]' },
-      delivered: { text: 'تم التسليم', bg: 'bg-[#30d158]/20', color: 'text-[#30d158]' },
-      cancelled: { text: 'ملغي', bg: 'bg-[#ff453a]/20', color: 'text-[#ff453a]' },
+      new: { text: 'جديد', bg: 'bg-brand/15', color: 'text-brand-ink' },
+      reviewing: { text: 'قيد المراجعة', bg: 'bg-info/20', color: 'text-info' },
+      confirmed: { text: 'تم التأكيد', bg: 'bg-brand-2/20', color: 'text-brand-2' },
+      processing: { text: 'قيد التجهيز', bg: 'bg-warn/20', color: 'text-warn' },
+      shipped: { text: 'خرج للتوصيل', bg: 'bg-info/20', color: 'text-info' },
+      delivered: { text: 'تم التسليم', bg: 'bg-success/20', color: 'text-success' },
+      cancelled: { text: 'ملغي', bg: 'bg-danger/20', color: 'text-danger' },
     };
     const c = map[st] || map.new;
     return (
@@ -271,23 +271,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-[#050505] text-[#f5f5f7] overflow-hidden animate-fadeIn">
+    <div className="fixed inset-0 z-[70] flex flex-col bg-canvas text-ink overflow-hidden animate-fade-in">
       {/* Top Admin Header Bar */}
-      <header className="h-16 px-4 sm:px-6 bg-[#0a0a0a] border-b border-[#d4af37]/30 flex items-center justify-between shrink-0">
+      <header className="h-16 px-4 sm:px-6 bg-canvas border-b border-brand/30 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#1c180e] border border-[#d4af37]/50 flex items-center justify-center text-[#ffd700] shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+          <div className="w-10 h-10 rounded-xl bg-surface-2 border border-brand/50 flex items-center justify-center text-ink shadow-glow">
             <LayoutDashboard className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base sm:text-lg font-black text-[#ffd700]">
+              <h1 className="text-base sm:text-lg font-black text-ink">
                 لوحة تحكم مركز المنار M.N.R
               </h1>
-              <span className="px-2 py-0.5 rounded bg-[#ffd700]/15 text-[#ffd700] text-[10px] font-bold">
+              <span className="px-2 py-0.5 rounded bg-gold/15 text-ink text-[10px] font-bold">
                 Admin Suite
               </span>
             </div>
-            <span className="text-[11px] text-[#99907c]">
+            <span className="text-[11px] text-ink-2">
               إدارة المتجر، الطلبات، المخزون والتوصيل المباشر لكافة محافظات العراق
             </span>
           </div>
@@ -306,8 +306,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
             }}
             className={`w-9 h-9 rounded-xl border flex items-center justify-center transition-all ${
               settings.audioNotifications
-                ? 'bg-[#1e190e] border-[#ffd700] text-[#ffd700]'
-                : 'bg-[#181818] border-[#333] text-[#666]'
+                ? 'bg-surface-2 border-brand text-ink'
+                : 'bg-surface-2 border-line-2 text-ink-3'
             }`}
             title={settings.audioNotifications ? 'صوت التنبيه مفعل' : 'صوت التنبيه صامت'}
           >
@@ -316,7 +316,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
 
           {/* New Orders Count Badge */}
           {newOrdersCount > 0 && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#ffd700]/15 border border-[#ffd700]/40 text-[#ffd700] text-xs font-bold animate-pulse">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gold/15 border border-brand/40 text-ink text-xs font-bold animate-pulse">
               <Bell className="w-4 h-4" />
               <span>طلبات جديدة: {newOrdersCount}</span>
             </div>
@@ -325,7 +325,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
           {/* Exit Dashboard */}
           <button
             onClick={onClose}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#141414] hover:bg-[#202020] border border-[#d4af37]/30 text-xs font-bold text-[#d0c5af] hover:text-[#ffd700] transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-2 hover:bg-surface-2 border border-brand/30 text-xs font-bold text-ink-2 hover:text-ink transition-colors"
           >
             <X className="w-4 h-4" />
             <span className="hidden sm:inline">العودة للمتجر</span>
@@ -335,13 +335,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
 
       {/* Live Order Incoming Toast Alert */}
       {latestNewOrder && (
-        <div className="bg-gradient-to-r from-[#1f190a] via-[#332a10] to-[#1f190a] border-b border-[#ffd700]/60 p-3 px-6 flex items-center justify-between animate-slideDown shadow-xl">
+        <div className="bg-gradient-to-r from-surface-2 via-surface-3 to-surface-2 border-b border-brand/60 p-3 px-6 flex items-center justify-between animate-toast shadow-xl">
           <div className="flex items-center gap-3">
-            <span className="w-3 h-3 rounded-full bg-[#ffd700] animate-ping" />
+            <span className="w-3 h-3 rounded-full bg-gold animate-ping" />
             <div className="text-xs">
-              <span className="font-bold text-[#ffd700]">وصل طلب جديد الآن! </span>
-              <span className="font-mono text-[#f5f5f7] mr-1">{latestNewOrder.orderNumber}</span>
-              <span className="text-[#d0c5af] mr-2">
+              <span className="font-bold text-ink">وصل طلب جديد الآن! </span>
+              <span className="font-mono text-ink mr-1">{latestNewOrder.orderNumber}</span>
+              <span className="text-ink-2 mr-2">
                 — {latestNewOrder.customerName} ({latestNewOrder.governorate}) • {formatIQD(latestNewOrder.total)}
               </span>
             </div>
@@ -353,13 +353,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                 setActiveTab('orders');
                 setLatestNewOrder(null);
               }}
-              className="px-3 py-1 rounded-lg bg-[#ffd700] text-[#0a0a0a] text-xs font-black shadow-md hover:brightness-110"
+              className="px-3 py-1 rounded-lg bg-gold text-on-brand text-xs font-black shadow-md hover:brightness-110"
             >
               معاينة الطلب
             </button>
             <button
               onClick={() => setLatestNewOrder(null)}
-              className="p-1 text-[#99907c] hover:text-[#f5f5f7]"
+              className="p-1 text-ink-2 hover:text-ink"
             >
               <X className="w-4 h-4" />
             </button>
@@ -370,14 +370,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
       {/* Main Container Layout */}
       <div className="flex-1 flex overflow-hidden">
         {/* Navigation Sidebar */}
-        <aside className="w-48 sm:w-56 bg-[#0a0a0a] border-l border-[#d4af37]/20 flex flex-col justify-between shrink-0 p-3 space-y-1 overflow-y-auto">
+        <aside className="w-48 sm:w-56 bg-canvas border-l border-brand/20 flex flex-col justify-between shrink-0 p-3 space-y-1 overflow-y-auto">
           <nav className="space-y-1">
             <button
               onClick={() => setActiveTab('overview')}
               className={`w-full h-11 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2.5 transition-all ${
                 activeTab === 'overview'
-                  ? 'bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] shadow-md'
-                  : 'text-[#d0c5af] hover:bg-[#141414] hover:text-[#ffd700]'
+                  ? 'bg-gradient-to-r from-brand to-brand-2 text-on-brand shadow-md'
+                  : 'text-ink-2 hover:bg-surface-2 hover:text-ink'
               }`}
             >
               <LayoutDashboard className="w-4 h-4" />
@@ -388,8 +388,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
               onClick={() => setActiveTab('orders')}
               className={`w-full h-11 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-between transition-all ${
                 activeTab === 'orders'
-                  ? 'bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] shadow-md'
-                  : 'text-[#d0c5af] hover:bg-[#141414] hover:text-[#ffd700]'
+                  ? 'bg-gradient-to-r from-brand to-brand-2 text-on-brand shadow-md'
+                  : 'text-ink-2 hover:bg-surface-2 hover:text-ink'
               }`}
             >
               <div className="flex items-center gap-2.5">
@@ -399,7 +399,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
               {newOrdersCount > 0 && (
                 <span
                   className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
-                    activeTab === 'orders' ? 'bg-[#0a0a0a] text-[#ffd700]' : 'bg-[#ffd700] text-[#0a0a0a]'
+                    activeTab === 'orders' ? 'bg-canvas text-ink' : 'bg-gold text-on-brand'
                   }`}
                 >
                   {newOrdersCount}
@@ -411,8 +411,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
               onClick={() => setActiveTab('products')}
               className={`w-full h-11 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2.5 transition-all ${
                 activeTab === 'products'
-                  ? 'bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] shadow-md'
-                  : 'text-[#d0c5af] hover:bg-[#141414] hover:text-[#ffd700]'
+                  ? 'bg-gradient-to-r from-brand to-brand-2 text-on-brand shadow-md'
+                  : 'text-ink-2 hover:bg-surface-2 hover:text-ink'
               }`}
             >
               <Package className="w-4 h-4" />
@@ -423,8 +423,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
               onClick={() => setActiveTab('inventory')}
               className={`w-full h-11 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-between transition-all ${
                 activeTab === 'inventory'
-                  ? 'bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] shadow-md'
-                  : 'text-[#d0c5af] hover:bg-[#141414] hover:text-[#ffd700]'
+                  ? 'bg-gradient-to-r from-brand to-brand-2 text-on-brand shadow-md'
+                  : 'text-ink-2 hover:bg-surface-2 hover:text-ink'
               }`}
             >
               <div className="flex items-center gap-2.5">
@@ -432,7 +432,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                 <span>المخزون</span>
               </div>
               {lowStockCount > 0 && (
-                <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#ff453a] text-white">
+                <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-danger text-white">
                   {lowStockCount}
                 </span>
               )}
@@ -442,8 +442,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
               onClick={() => setActiveTab('customers')}
               className={`w-full h-11 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2.5 transition-all ${
                 activeTab === 'customers'
-                  ? 'bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] shadow-md'
-                  : 'text-[#d0c5af] hover:bg-[#141414] hover:text-[#ffd700]'
+                  ? 'bg-gradient-to-r from-brand to-brand-2 text-on-brand shadow-md'
+                  : 'text-ink-2 hover:bg-surface-2 hover:text-ink'
               }`}
             >
               <Users className="w-4 h-4" />
@@ -454,8 +454,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
               onClick={() => setActiveTab('offers')}
               className={`w-full h-11 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2.5 transition-all ${
                 activeTab === 'offers'
-                  ? 'bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] shadow-md'
-                  : 'text-[#d0c5af] hover:bg-[#141414] hover:text-[#ffd700]'
+                  ? 'bg-gradient-to-r from-brand to-brand-2 text-on-brand shadow-md'
+                  : 'text-ink-2 hover:bg-surface-2 hover:text-ink'
               }`}
             >
               <Tag className="w-4 h-4" />
@@ -466,8 +466,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
               onClick={() => setActiveTab('settings')}
               className={`w-full h-11 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2.5 transition-all ${
                 activeTab === 'settings'
-                  ? 'bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] shadow-md'
-                  : 'text-[#d0c5af] hover:bg-[#141414] hover:text-[#ffd700]'
+                  ? 'bg-gradient-to-r from-brand to-brand-2 text-on-brand shadow-md'
+                  : 'text-ink-2 hover:bg-surface-2 hover:text-ink'
               }`}
             >
               <Settings className="w-4 h-4" />
@@ -476,71 +476,71 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
           </nav>
 
           {/* Quick Support Footnote */}
-          <div className="p-3 rounded-xl bg-[#121212] border border-[#d4af37]/20 text-[11px] text-[#99907c] space-y-1">
-            <span className="font-bold text-[#ffd700] block">مركز الدعم الفني</span>
+          <div className="p-3 rounded-xl bg-surface-2 border border-brand/20 text-[11px] text-ink-2 space-y-1">
+            <span className="font-bold text-ink block">مركز الدعم الفني</span>
             <span>هاتف: 0770 123 4567</span>
           </div>
         </aside>
 
         {/* Content Body Viewport */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#070707]">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-canvas">
           {/* TAB 1: OVERVIEW */}
           {activeTab === 'overview' && (
             <div className="space-y-6">
               {/* KPI Stat Cards Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Total Revenue */}
-                <div className="p-5 rounded-2xl bg-[#121212] border border-[#d4af37]/25 space-y-2">
-                  <div className="flex items-center justify-between text-[#99907c] text-xs">
+                <div className="p-5 rounded-2xl bg-surface-2 border border-brand/25 space-y-2">
+                  <div className="flex items-center justify-between text-ink-2 text-xs">
                     <span>إجمالي المبيعات المحققة</span>
-                    <TrendingUp className="w-4 h-4 text-[#ffd700]" />
+                    <TrendingUp className="w-4 h-4 text-ink" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black text-[#ffd700] tracking-tight">
+                  <div className="text-2xl sm:text-3xl font-black text-ink tracking-tight">
                     {formatIQD(totalRevenue)}
                   </div>
-                  <span className="text-[11px] text-[#30d158] font-semibold">
+                  <span className="text-[11px] text-success font-semibold">
                     صافي كافة الطلبات المؤكدة
                   </span>
                 </div>
 
                 {/* New Orders */}
-                <div className="p-5 rounded-2xl bg-[#121212] border border-[#d4af37]/25 space-y-2">
-                  <div className="flex items-center justify-between text-[#99907c] text-xs">
+                <div className="p-5 rounded-2xl bg-surface-2 border border-brand/25 space-y-2">
+                  <div className="flex items-center justify-between text-ink-2 text-xs">
                     <span>الطلبات الجديدة الواردة</span>
-                    <span className="w-2 h-2 rounded-full bg-[#ffd700] animate-ping" />
+                    <span className="w-2 h-2 rounded-full bg-gold animate-ping" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black text-[#ffd700]">
+                  <div className="text-2xl sm:text-3xl font-black text-ink">
                     {newOrdersCount}
                   </div>
-                  <span className="text-[11px] text-[#d0c5af]">
+                  <span className="text-[11px] text-ink-2">
                     بانتظار المراجعة والاتصال بالزبون
                   </span>
                 </div>
 
                 {/* In Processing */}
-                <div className="p-5 rounded-2xl bg-[#121212] border border-[#d4af37]/25 space-y-2">
-                  <div className="flex items-center justify-between text-[#99907c] text-xs">
+                <div className="p-5 rounded-2xl bg-surface-2 border border-brand/25 space-y-2">
+                  <div className="flex items-center justify-between text-ink-2 text-xs">
                     <span>قيد التجهيز والتغليف</span>
-                    <Clock className="w-4 h-4 text-[#ff9f0a]" />
+                    <Clock className="w-4 h-4 text-warn" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black text-[#ff9f0a]">
+                  <div className="text-2xl sm:text-3xl font-black text-warn">
                     {inPrepOrdersCount}
                   </div>
-                  <span className="text-[11px] text-[#99907c]">
+                  <span className="text-[11px] text-ink-2">
                     بالمستودع لفحص السيريال والشحن
                   </span>
                 </div>
 
                 {/* Delivered Orders */}
-                <div className="p-5 rounded-2xl bg-[#121212] border border-[#d4af37]/25 space-y-2">
-                  <div className="flex items-center justify-between text-[#99907c] text-xs">
+                <div className="p-5 rounded-2xl bg-surface-2 border border-brand/25 space-y-2">
+                  <div className="flex items-center justify-between text-ink-2 text-xs">
                     <span>تم التسليم بنجاح</span>
-                    <CheckCircle className="w-4 h-4 text-[#30d158]" />
+                    <CheckCircle className="w-4 h-4 text-success" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black text-[#30d158]">
+                  <div className="text-2xl sm:text-3xl font-black text-success">
                     {deliveredOrdersCount}
                   </div>
-                  <span className="text-[11px] text-[#99907c]">
+                  <span className="text-[11px] text-ink-2">
                     تم استلام المبلغ نقداً من الزبائن
                   </span>
                 </div>
@@ -548,40 +548,40 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
 
               {/* Secondary Stats */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 rounded-2xl bg-[#121212] border border-[#d4af37]/20 flex items-center justify-between">
+                <div className="p-4 rounded-2xl bg-surface-2 border border-brand/20 flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-xs text-[#99907c]">إجمالي أصناف المنتجات:</span>
-                    <span className="text-xl font-bold text-[#f5f5f7]">{products.length} صنف</span>
+                    <span className="text-xs text-ink-2">إجمالي أصناف المنتجات:</span>
+                    <span className="text-xl font-bold text-ink">{products.length} صنف</span>
                   </div>
-                  <Package className="w-8 h-8 text-[#d4af37] opacity-50" />
+                  <Package className="w-8 h-8 text-ink opacity-50" />
                 </div>
 
-                <div className="p-4 rounded-2xl bg-[#121212] border border-[#d4af37]/20 flex items-center justify-between">
+                <div className="p-4 rounded-2xl bg-surface-2 border border-brand/20 flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-xs text-[#99907c]">منتجات منخفضة المخزون:</span>
-                    <span className="text-xl font-bold text-[#ff453a]">{lowStockCount} منتج حرِج</span>
+                    <span className="text-xs text-ink-2">منتجات منخفضة المخزون:</span>
+                    <span className="text-xl font-bold text-danger">{lowStockCount} منتج حرِج</span>
                   </div>
-                  <AlertTriangle className="w-8 h-8 text-[#ff453a] opacity-50" />
+                  <AlertTriangle className="w-8 h-8 text-danger opacity-50" />
                 </div>
 
-                <div className="p-4 rounded-2xl bg-[#121212] border border-[#d4af37]/20 flex items-center justify-between">
+                <div className="p-4 rounded-2xl bg-surface-2 border border-brand/20 flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-xs text-[#99907c]">طلبات ملغاة:</span>
-                    <span className="text-xl font-bold text-[#99907c]">{cancelledOrdersCount} طلب</span>
+                    <span className="text-xs text-ink-2">طلبات ملغاة:</span>
+                    <span className="text-xl font-bold text-ink-2">{cancelledOrdersCount} طلب</span>
                   </div>
-                  <X className="w-8 h-8 text-[#666] opacity-50" />
+                  <X className="w-8 h-8 text-ink-3 opacity-50" />
                 </div>
               </div>
 
               {/* Latest Incoming Orders Table Preview */}
-              <div className="p-5 rounded-2xl bg-[#121212] border border-[#d4af37]/25 space-y-4">
+              <div className="p-5 rounded-2xl bg-surface-2 border border-brand/25 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm sm:text-base font-bold text-[#ffd700]">
+                  <h3 className="text-sm sm:text-base font-bold text-ink">
                     آخر الطلبات الواردة فوراً
                   </h3>
                   <button
                     onClick={() => setActiveTab('orders')}
-                    className="text-xs text-[#d4af37] hover:underline"
+                    className="text-xs text-ink hover:underline"
                   >
                     عرض كل الطلبات ({orders.length}) ←
                   </button>
@@ -590,7 +590,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs text-right">
                     <thead>
-                      <tr className="border-b border-[#222] text-[#99907c]">
+                      <tr className="border-b border-line text-ink-2">
                         <th className="py-2.5 px-3">رقم الطلب</th>
                         <th className="py-2.5 px-3">الزبون</th>
                         <th className="py-2.5 px-3">الهاتف</th>
@@ -600,18 +600,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                         <th className="py-2.5 px-3">إجراء</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#1c1c1c]">
+                    <tbody className="divide-y divide-line">
                       {orders.slice(0, 5).map((ord) => (
-                        <tr key={ord.id} className="hover:bg-[#181818]/60 transition-colors">
-                          <td className="py-3 px-3 font-mono font-bold text-[#ffd700]" dir="ltr">
+                        <tr key={ord.id} className="hover:bg-surface-2/60 transition-colors">
+                          <td className="py-3 px-3 font-mono font-bold text-ink" dir="ltr">
                             {ord.orderNumber}
                           </td>
-                          <td className="py-3 px-3 font-bold text-[#f5f5f7]">{ord.customerName}</td>
-                          <td className="py-3 px-3 font-mono text-[#d0c5af]" dir="ltr">
+                          <td className="py-3 px-3 font-bold text-ink">{ord.customerName}</td>
+                          <td className="py-3 px-3 font-mono text-ink-2" dir="ltr">
                             {ord.phone}
                           </td>
-                          <td className="py-3 px-3 text-[#d0c5af]">{ord.governorate}</td>
-                          <td className="py-3 px-3 font-bold text-[#ffd700]">
+                          <td className="py-3 px-3 text-ink-2">{ord.governorate}</td>
+                          <td className="py-3 px-3 font-bold text-ink">
                             {formatIQD(ord.total)}
                           </td>
                           <td className="py-3 px-3">{statusBadge(ord.status)}</td>
@@ -621,7 +621,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                                 setSelectedOrder(ord);
                                 setActiveTab('orders');
                               }}
-                              className="px-2.5 py-1 rounded-lg bg-[#1e1b12] hover:bg-[#282215] border border-[#d4af37]/30 text-[#ffd700] text-[11px] font-bold"
+                              className="px-2.5 py-1 rounded-lg bg-surface-2 hover:bg-surface-2 border border-brand/30 text-ink text-[11px] font-bold"
                             >
                               معاينة
                             </button>
@@ -639,7 +639,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
           {activeTab === 'orders' && (
             <div className="space-y-5">
               {/* Controls: Search & Filters Bar */}
-              <div className="p-4 rounded-2xl bg-[#121212] border border-[#d4af37]/25 space-y-3">
+              <div className="p-4 rounded-2xl bg-surface-2 border border-brand/25 space-y-3">
                 <div className="flex flex-col md:flex-row items-center gap-3">
                   {/* Search Bar */}
                   <div className="relative flex-1 w-full">
@@ -648,9 +648,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                       value={orderSearch}
                       onChange={(e) => setOrderSearch(e.target.value)}
                       placeholder="البحث برقم الطلب، اسم العميل، رقم الهاتف أو المحافظة..."
-                      className="w-full h-11 px-4 pr-10 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-xs sm:text-sm text-[#f5f5f7] focus:outline-none focus:border-[#ffd700]"
+                      className="w-full h-11 px-4 pr-10 rounded-xl bg-surface-2 border border-brand/25 text-xs sm:text-sm text-ink focus:outline-none focus:border-brand"
                     />
-                    <Search className="absolute right-3.5 top-3.5 w-4 h-4 text-[#d4af37]" />
+                    <Search className="absolute right-3.5 top-3.5 w-4 h-4 text-ink" />
                   </div>
 
                   {/* Governorate Filter */}
@@ -658,7 +658,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                     <select
                       value={governorateFilter}
                       onChange={(e) => setGovernorateFilter(e.target.value)}
-                      className="w-full h-11 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-xs text-[#f5f5f7] focus:outline-none focus:border-[#ffd700] cursor-pointer"
+                      className="w-full h-11 px-3 rounded-xl bg-surface-2 border border-brand/25 text-xs text-ink focus:outline-none focus:border-brand cursor-pointer"
                     >
                       <option value="all">كل المحافظات ({orders.length})</option>
                       {IRAQ_GOVERNORATES.map((gov) => {
@@ -674,7 +674,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                 </div>
 
                 {/* Status Filter Tabs */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
+                <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs mnr-no-scrollbar">
                   {[
                     { id: 'all', label: 'كل الطلبات', count: orders.length },
                     { id: 'new', label: 'الجديدة', count: newOrdersCount },
@@ -690,8 +690,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                       onClick={() => setStatusFilter(tab.id as any)}
                       className={`px-3 py-1.5 rounded-xl whitespace-nowrap font-bold transition-all ${
                         statusFilter === tab.id
-                          ? 'bg-[#ffd700] text-[#0a0a0a] shadow-sm'
-                          : 'bg-[#181818] text-[#99907c] hover:text-[#f5f5f7]'
+                          ? 'bg-gold text-on-brand shadow-sm'
+                          : 'bg-surface-2 text-ink-2 hover:text-ink'
                       }`}
                     >
                       {tab.label} ({tab.count})
@@ -701,11 +701,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
               </div>
 
               {/* Orders Table */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-[#121212] border border-[#d4af37]/25">
+              <div className="p-4 sm:p-5 rounded-2xl bg-surface-2 border border-brand/25">
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs text-right">
                     <thead>
-                      <tr className="border-b border-[#222] text-[#99907c]">
+                      <tr className="border-b border-line text-ink-2">
                         <th className="py-3 px-3">رقم الطلب</th>
                         <th className="py-3 px-3">الزبون</th>
                         <th className="py-3 px-3">الهاتف</th>
@@ -716,10 +716,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                         <th className="py-3 px-3">إجراء وتفاصيل</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#1a1a1a]">
+                    <tbody className="divide-y divide-line">
                       {filteredOrders.length === 0 ? (
                         <tr>
-                          <td colSpan={8} className="py-8 text-center text-[#99907c]">
+                          <td colSpan={8} className="py-8 text-center text-ink-2">
                             لا توجد طلبات مطابقة للفلتر المحدد
                           </td>
                         </tr>
@@ -727,25 +727,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                         filteredOrders.map((ord) => (
                           <tr
                             key={ord.id}
-                            className={`hover:bg-[#181818] transition-colors cursor-pointer ${
-                              selectedOrder?.id === ord.id ? 'bg-[#1e190e]/80 border-r-2 border-[#ffd700]' : ''
+                            className={`hover:bg-surface-2 transition-colors cursor-pointer ${
+                              selectedOrder?.id === ord.id ? 'bg-surface-2/80 border-r-2 border-brand' : ''
                             }`}
                             onClick={() => setSelectedOrder(ord)}
                           >
-                            <td className="py-3.5 px-3 font-mono font-bold text-[#ffd700]" dir="ltr">
+                            <td className="py-3.5 px-3 font-mono font-bold text-ink" dir="ltr">
                               {ord.orderNumber}
                             </td>
-                            <td className="py-3.5 px-3 font-bold text-[#f5f5f7]">{ord.customerName}</td>
-                            <td className="py-3.5 px-3 font-mono text-[#d0c5af]" dir="ltr">
+                            <td className="py-3.5 px-3 font-bold text-ink">{ord.customerName}</td>
+                            <td className="py-3.5 px-3 font-mono text-ink-2" dir="ltr">
                               {ord.phone}
                             </td>
-                            <td className="py-3.5 px-3 text-[#d0c5af]">
+                            <td className="py-3.5 px-3 text-ink-2">
                               {ord.governorate} - {ord.city}
                             </td>
-                            <td className="py-3.5 px-3 text-[#99907c]">
+                            <td className="py-3.5 px-3 text-ink-2">
                               {ord.items.length} أصناف ({ord.items.map((i) => i.productName.slice(0, 15)).join(', ')}...)
                             </td>
-                            <td className="py-3.5 px-3 font-bold text-[#ffd700]">
+                            <td className="py-3.5 px-3 font-bold text-ink">
                               {formatIQD(ord.total)}
                             </td>
                             <td className="py-3.5 px-3">{statusBadge(ord.status)}</td>
@@ -755,7 +755,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                                   e.stopPropagation();
                                   setSelectedOrder(ord);
                                 }}
-                                className="px-3 py-1.5 rounded-lg bg-[#ffd700]/15 hover:bg-[#ffd700]/30 border border-[#ffd700]/40 text-[#ffd700] text-xs font-bold"
+                                className="px-3 py-1.5 rounded-lg bg-gold/15 hover:bg-gold/30 border border-brand/40 text-ink text-xs font-bold"
                               >
                                 فتح الطلب
                               </button>
@@ -770,25 +770,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
 
               {/* Order Full Detail Inspector Modal */}
               {selectedOrder && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-md animate-fadeIn overflow-y-auto">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
                   <div
-                    className="relative w-full max-w-2xl my-auto rounded-3xl bg-gradient-to-b from-[#141414] to-[#0a0a0a] border border-[#d4af37]/40 shadow-2xl p-5 sm:p-8 text-right text-[#f5f5f7]"
+                    className="relative w-full max-w-2xl my-auto rounded-3xl bg-gradient-to-b from-surface to-canvas border border-brand/40 shadow-2xl p-5 sm:p-8 text-right text-ink"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {/* Header */}
-                    <div className="flex items-center justify-between pb-4 border-b border-[#d4af37]/20 mb-5">
+                    <div className="flex items-center justify-between pb-4 border-b border-brand/20 mb-5">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-[#1c180e] border border-[#d4af37]/40 flex items-center justify-center text-[#ffd700]">
+                        <div className="w-10 h-10 rounded-xl bg-surface-2 border border-brand/40 flex items-center justify-center text-ink">
                           <ShoppingBag className="w-5 h-5" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-mono text-base font-bold text-[#ffd700]" dir="ltr">
+                            <span className="font-mono text-base font-bold text-ink" dir="ltr">
                               {selectedOrder.orderNumber}
                             </span>
                             {statusBadge(selectedOrder.status)}
                           </div>
-                          <span className="text-xs text-[#99907c]">
+                          <span className="text-xs text-ink-2">
                             تاريخ ووقت الطلب: {new Date(selectedOrder.createdAt).toLocaleString('ar-IQ')}
                           </span>
                         </div>
@@ -796,7 +796,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
 
                       <button
                         onClick={() => setSelectedOrder(null)}
-                        className="w-8 h-8 rounded-lg bg-[#181818] border border-[#d4af37]/20 flex items-center justify-center text-[#99907c] hover:text-[#ffd700]"
+                        className="w-8 h-8 rounded-lg bg-surface-2 border border-brand/20 flex items-center justify-center text-ink-2 hover:text-ink"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -804,100 +804,100 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
 
                     <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
                       {/* Customer Info Box */}
-                      <div className="p-4 rounded-2xl bg-[#121212] border border-[#d4af37]/20 space-y-2.5 text-xs">
-                        <span className="font-bold text-[#ffd700] block pb-1 border-b border-[#222]">
+                      <div className="p-4 rounded-2xl bg-surface-2 border border-brand/20 space-y-2.5 text-xs">
+                        <span className="font-bold text-ink block pb-1 border-b border-line">
                           معلومات وبيانات العميل:
                         </span>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                           <div>
-                            <span className="text-[#99907c]">الاسم: </span>
-                            <span className="font-bold text-[#f5f5f7]">{selectedOrder.customerName}</span>
+                            <span className="text-ink-2">الاسم: </span>
+                            <span className="font-bold text-ink">{selectedOrder.customerName}</span>
                           </div>
                           <div className="flex items-center justify-between">
                             <div>
-                              <span className="text-[#99907c]">الهاتف: </span>
-                              <span className="font-mono font-bold text-[#ffd700]" dir="ltr">
+                              <span className="text-ink-2">الهاتف: </span>
+                              <span className="font-mono font-bold text-ink" dir="ltr">
                                 {selectedOrder.phone}
                               </span>
                             </div>
                             <a
                               href={`tel:${selectedOrder.phone}`}
-                              className="px-2 py-0.5 rounded bg-[#30d158]/20 text-[#30d158] font-bold text-[11px] flex items-center gap-1"
+                              className="px-2 py-0.5 rounded bg-success/20 text-success font-bold text-[11px] flex items-center gap-1"
                             >
                               <Phone className="w-3 h-3" />
                               <span>اتصال</span>
                             </a>
                           </div>
                           <div>
-                            <span className="text-[#99907c]">المحافظة: </span>
-                            <span className="font-bold text-[#f5f5f7]">{selectedOrder.governorate}</span>
+                            <span className="text-ink-2">المحافظة: </span>
+                            <span className="font-bold text-ink">{selectedOrder.governorate}</span>
                           </div>
                           <div>
-                            <span className="text-[#99907c]">المدينة / الحي: </span>
-                            <span className="font-medium text-[#f5f5f7]">{selectedOrder.city} - {selectedOrder.district}</span>
+                            <span className="text-ink-2">المدينة / الحي: </span>
+                            <span className="font-medium text-ink">{selectedOrder.city} - {selectedOrder.district}</span>
                           </div>
                           <div className="sm:col-span-2">
-                            <span className="text-[#99907c]">أقرب نقطة دالة: </span>
-                            <span className="font-bold text-[#ffd700]">{selectedOrder.nearestLandmark}</span>
+                            <span className="text-ink-2">أقرب نقطة دالة: </span>
+                            <span className="font-bold text-ink">{selectedOrder.nearestLandmark}</span>
                           </div>
                           <div className="sm:col-span-2">
-                            <span className="text-[#99907c]">العنوان الكامل: </span>
-                            <span className="text-[#d0c5af]">{selectedOrder.address}</span>
+                            <span className="text-ink-2">العنوان الكامل: </span>
+                            <span className="text-ink-2">{selectedOrder.address}</span>
                           </div>
                           {selectedOrder.notes && (
-                            <div className="sm:col-span-2 bg-[#181818] p-2 rounded-lg">
-                              <span className="text-[#99907c]">ملاحظات الزبون: </span>
-                              <span className="text-[#f5f5f7]">{selectedOrder.notes}</span>
+                            <div className="sm:col-span-2 bg-surface-2 p-2 rounded-lg">
+                              <span className="text-ink-2">ملاحظات الزبون: </span>
+                              <span className="text-ink">{selectedOrder.notes}</span>
                             </div>
                           )}
                         </div>
                       </div>
 
                       {/* Items in Order */}
-                      <div className="p-4 rounded-2xl bg-[#121212] border border-[#d4af37]/20 space-y-2 text-xs">
-                        <span className="font-bold text-[#ffd700] block pb-1 border-b border-[#222]">
+                      <div className="p-4 rounded-2xl bg-surface-2 border border-brand/20 space-y-2 text-xs">
+                        <span className="font-bold text-ink block pb-1 border-b border-line">
                           المنتجات المطلوبة ({selectedOrder.items.length}):
                         </span>
                         {selectedOrder.items.map((item, idx) => (
-                          <div key={idx} className="flex justify-between items-center py-1.5 border-b border-[#1c1c1c]">
+                          <div key={idx} className="flex justify-between items-center py-1.5 border-b border-line">
                             <div className="flex items-center gap-2">
                               <img
                                 src={item.productImage}
                                 alt={item.productName}
-                                className="w-9 h-9 rounded-lg object-cover bg-[#0a0a0a]"
+                                className="w-9 h-9 rounded-lg object-cover bg-canvas"
                               />
                               <div>
-                                <span className="font-bold text-[#f5f5f7] block">{item.productName}</span>
-                                <span className="text-[10px] text-[#99907c]">
+                                <span className="font-bold text-ink block">{item.productName}</span>
+                                <span className="text-[10px] text-ink-2">
                                   {item.quantity} × {formatIQD(item.unitPrice)}
                                 </span>
                               </div>
                             </div>
-                            <span className="font-bold text-[#ffd700]">{formatIQD(item.totalPrice)}</span>
+                            <span className="font-bold text-ink">{formatIQD(item.totalPrice)}</span>
                           </div>
                         ))}
 
                         <div className="pt-2 space-y-1 text-xs">
-                          <div className="flex justify-between text-[#99907c]">
+                          <div className="flex justify-between text-ink-2">
                             <span>مجموع قيمة المنتجات:</span>
-                            <span className="font-bold text-[#f5f5f7]">{formatIQD(selectedOrder.subtotal)}</span>
+                            <span className="font-bold text-ink">{formatIQD(selectedOrder.subtotal)}</span>
                           </div>
-                          <div className="flex justify-between text-[#99907c]">
+                          <div className="flex justify-between text-ink-2">
                             <span>أجور التوصيل الثابتة:</span>
-                            <span className="font-bold text-[#ffd700]">{formatIQD(selectedOrder.deliveryFee)}</span>
+                            <span className="font-bold text-ink">{formatIQD(selectedOrder.deliveryFee)}</span>
                           </div>
-                          <div className="flex justify-between pt-1 border-t border-[#d4af37]/20 font-bold text-sm">
-                            <span className="text-[#f5f5f7]">المجموع المطلوب تحصيله:</span>
-                            <span className="text-base text-[#ffd700]">{formatIQD(selectedOrder.total)}</span>
+                          <div className="flex justify-between pt-1 border-t border-brand/20 font-bold text-sm">
+                            <span className="text-ink">المجموع المطلوب تحصيله:</span>
+                            <span className="text-base text-ink">{formatIQD(selectedOrder.total)}</span>
                           </div>
                         </div>
                       </div>
 
                       {/* Status Transition Control (Timeline Updater) */}
-                      <div className="p-4 rounded-2xl bg-[#18150c] border border-[#d4af37]/30 space-y-3">
+                      <div className="p-4 rounded-2xl bg-surface-2 border border-brand/30 space-y-3">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-[#ffd700]">تحديث مرحلة الطلب:</span>
-                          <span className="text-[11px] text-[#99907c]">التحديث ينعكس فورياً في تتبع الزبون</span>
+                          <span className="text-xs font-bold text-ink">تحديث مرحلة الطلب:</span>
+                          <span className="text-[11px] text-ink-2">التحديث ينعكس فورياً في تتبع الزبون</span>
                         </div>
 
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
@@ -909,8 +909,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                                 onClick={() => handleStatusChange(selectedOrder.id, st)}
                                 className={`p-2 rounded-xl font-bold border transition-all text-center ${
                                   isCurrent
-                                    ? 'bg-[#ffd700] text-[#0a0a0a] border-[#ffd700] shadow-md'
-                                    : 'bg-[#141414] hover:bg-[#1e1b12] text-[#d0c5af] border-[#d4af37]/20 hover:border-[#ffd700]/50'
+                                    ? 'bg-gold text-on-brand border-brand shadow-md'
+                                    : 'bg-surface-2 hover:bg-surface-2 text-ink-2 border-brand/20 hover:border-brand/50'
                                 }`}
                               >
                                 {statusBadge(st)}
@@ -924,9 +924,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                       <div className="grid grid-cols-2 gap-3 pt-2">
                         <button
                           onClick={() => window.print()}
-                          className="h-11 rounded-xl bg-[#181818] hover:bg-[#222] border border-[#d4af37]/30 text-xs font-bold text-[#f5f5f7] flex items-center justify-center gap-2"
+                          className="h-11 rounded-xl bg-surface-2 hover:bg-surface-3 border border-brand/30 text-xs font-bold text-ink flex items-center justify-center gap-2"
                         >
-                          <Printer className="w-4 h-4 text-[#ffd700]" />
+                          <Printer className="w-4 h-4 text-ink" />
                           <span>طباعة فاتورة / بوليصة</span>
                         </button>
 
@@ -934,7 +934,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                           href={`https://wa.me/964${selectedOrder.phone.replace(/^0/, '')}?text=مرحباً ${selectedOrder.customerName}، معكم مركز المنار للموبايل M.N.R بخصوص طلبكم ${selectedOrder.orderNumber}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="h-11 rounded-xl bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] text-xs font-bold flex items-center justify-center gap-2 hover:brightness-110"
+                          className="h-11 rounded-xl bg-gradient-to-r from-brand to-brand-2 text-on-brand text-xs font-bold flex items-center justify-center gap-2 hover:brightness-110"
                         >
                           <span>واتساب العميل</span>
                           <ExternalLink className="w-4 h-4" />
@@ -952,8 +952,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
             <div className="space-y-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-base font-bold text-[#ffd700]">كتالوج المنتجات</h3>
-                  <span className="text-xs text-[#99907c]">إضافة وتعديل الأسعار والمخزون وحالة التوفر</span>
+                  <h3 className="text-base font-bold text-ink">كتالوج المنتجات</h3>
+                  <span className="text-xs text-ink-2">إضافة وتعديل الأسعار والمخزون وحالة التوفر</span>
                 </div>
                 <button
                   onClick={() => {
@@ -976,7 +976,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                     });
                     setIsAddingProduct(true);
                   }}
-                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] text-xs font-bold flex items-center gap-1.5 shadow-md hover:brightness-110 active:scale-95"
+                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand to-brand-2 text-on-brand text-xs font-bold flex items-center gap-1.5 shadow-md hover:brightness-110 active:scale-95"
                 >
                   <Plus className="w-4 h-4" />
                   <span>إضافة منتج جديد</span>
@@ -984,10 +984,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
               </div>
 
               {/* Products Table */}
-              <div className="p-4 rounded-2xl bg-[#121212] border border-[#d4af37]/25 overflow-x-auto">
+              <div className="p-4 rounded-2xl bg-surface-2 border border-brand/25 overflow-x-auto">
                 <table className="w-full text-xs text-right">
                   <thead>
-                    <tr className="border-b border-[#222] text-[#99907c]">
+                    <tr className="border-b border-line text-ink-2">
                       <th className="py-2.5 px-3">المنتج</th>
                       <th className="py-2.5 px-3">العلامة</th>
                       <th className="py-2.5 px-3">القسم</th>
@@ -997,29 +997,29 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                       <th className="py-2.5 px-3">إجراء</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#1c1c1c]">
+                  <tbody className="divide-y divide-line">
                     {products.map((p) => (
-                      <tr key={p.id} className="hover:bg-[#181818] transition-colors">
+                      <tr key={p.id} className="hover:bg-surface-2 transition-colors">
                         <td className="py-3 px-3">
                           <div className="flex items-center gap-2.5">
                             <img
                               src={p.image}
                               alt={p.name}
-                              className="w-10 h-10 rounded-lg object-cover bg-[#0a0a0a]"
+                              className="w-10 h-10 rounded-lg object-cover bg-canvas"
                             />
                             <div className="max-w-[200px]">
-                              <span className="font-bold text-[#f5f5f7] block truncate">{p.name}</span>
-                              <span className="text-[10px] text-[#99907c] truncate block">{p.nameEn}</span>
+                              <span className="font-bold text-ink block truncate">{p.name}</span>
+                              <span className="text-[10px] text-ink-2 truncate block">{p.nameEn}</span>
                             </div>
                           </div>
                         </td>
-                        <td className="py-3 px-3 font-semibold text-[#ffd700]">{p.brand}</td>
-                        <td className="py-3 px-3 text-[#d0c5af]">{p.category}</td>
-                        <td className="py-3 px-3 font-bold text-[#ffd700]">{formatIQD(p.price)}</td>
+                        <td className="py-3 px-3 font-semibold text-ink">{p.brand}</td>
+                        <td className="py-3 px-3 text-ink-2">{p.category}</td>
+                        <td className="py-3 px-3 font-bold text-ink">{formatIQD(p.price)}</td>
                         <td className="py-3 px-3">
                           <span
                             className={`font-bold ${
-                              p.stock <= 0 ? 'text-[#ff453a]' : p.stock <= 5 ? 'text-[#ff9f0a]' : 'text-[#30d158]'
+                              p.stock <= 0 ? 'text-danger' : p.stock <= 5 ? 'text-warn' : 'text-success'
                             }`}
                           >
                             {p.stock} قطع
@@ -1029,10 +1029,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                           <span
                             className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                               p.status === 'in_stock'
-                                ? 'bg-[#30d158]/20 text-[#30d158]'
+                                ? 'bg-success/20 text-success'
                                 : p.status === 'out_of_stock'
-                                ? 'bg-[#ff453a]/20 text-[#ff453a]'
-                                : 'bg-[#ffd700]/20 text-[#ffd700]'
+                                ? 'bg-danger/20 text-danger'
+                                : 'bg-gold/20 text-ink'
                             }`}
                           >
                             {p.status === 'in_stock' ? 'متوفر' : p.status === 'out_of_stock' ? 'نفذ المخزون' : 'قريباً'}
@@ -1046,7 +1046,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                                 setProductForm(p);
                                 setIsAddingProduct(false);
                               }}
-                              className="p-1.5 rounded-lg bg-[#1a160d] text-[#ffd700] hover:bg-[#252012]"
+                              className="p-1.5 rounded-lg bg-surface-2 text-ink hover:bg-surface-3"
                               title="تعديل"
                             >
                               <Edit2 className="w-3.5 h-3.5" />
@@ -1057,7 +1057,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                                   storeStorage.deleteProduct(p.id);
                                 }
                               }}
-                              className="p-1.5 rounded-lg bg-[#221010] text-[#ff453a] hover:bg-[#331515]"
+                              className="p-1.5 rounded-lg bg-danger-soft text-danger hover:bg-danger-soft"
                               title="حذف"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -1072,13 +1072,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
 
               {/* Product Add / Edit Modal Drawer */}
               {(isAddingProduct || editingProduct) && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn overflow-y-auto">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
                   <div
-                    className="relative w-full max-w-xl my-auto rounded-3xl bg-gradient-to-b from-[#141414] to-[#0a0a0a] border border-[#d4af37]/40 p-6 text-right space-y-4"
+                    className="relative w-full max-w-xl my-auto rounded-3xl bg-gradient-to-b from-surface to-canvas border border-brand/40 p-6 text-right space-y-4"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="flex items-center justify-between pb-3 border-b border-[#222]">
-                      <h4 className="text-base font-bold text-[#ffd700]">
+                    <div className="flex items-center justify-between pb-3 border-b border-line">
+                      <h4 className="text-base font-bold text-ink">
                         {editingProduct ? 'تعديل بيانات المنتج' : 'إضافة منتج جديد'}
                       </h4>
                       <button
@@ -1086,7 +1086,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                           setEditingProduct(null);
                           setIsAddingProduct(false);
                         }}
-                        className="p-1 rounded-lg bg-[#181818] text-[#99907c]"
+                        className="p-1 rounded-lg bg-surface-2 text-ink-2"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -1094,32 +1094,32 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
 
                     <form onSubmit={handleSaveProduct} className="space-y-3 text-xs">
                       <div>
-                        <label className="block text-[#d0c5af] mb-1 font-semibold">اسم المنتج بالعربية:</label>
+                        <label className="block text-ink-2 mb-1 font-semibold">اسم المنتج بالعربية:</label>
                         <input
                           type="text"
                           required
                           value={productForm.name || ''}
                           onChange={(e) => setProductForm({ ...productForm, name: e.target.value })}
-                          className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#f5f5f7] focus:outline-none focus:border-[#ffd700]"
+                          className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink focus:outline-none focus:border-brand"
                         />
                       </div>
 
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <label className="block text-[#d0c5af] mb-1 font-semibold">العلامة التجارية:</label>
+                          <label className="block text-ink-2 mb-1 font-semibold">العلامة التجارية:</label>
                           <input
                             type="text"
                             value={productForm.brand || ''}
                             onChange={(e) => setProductForm({ ...productForm, brand: e.target.value })}
-                            className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#f5f5f7] focus:outline-none focus:border-[#ffd700]"
+                            className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink focus:outline-none focus:border-brand"
                           />
                         </div>
                         <div>
-                          <label className="block text-[#d0c5af] mb-1 font-semibold">القسم:</label>
+                          <label className="block text-ink-2 mb-1 font-semibold">القسم:</label>
                           <select
                             value={productForm.category || 'phones'}
                             onChange={(e) => setProductForm({ ...productForm, category: e.target.value as any })}
-                            className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#f5f5f7] focus:outline-none focus:border-[#ffd700]"
+                            className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink focus:outline-none focus:border-brand"
                           >
                             {CATEGORIES_LIST.map((c) => (
                               <option key={c.id} value={c.id}>
@@ -1132,43 +1132,43 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
 
                       <div className="grid grid-cols-3 gap-3">
                         <div>
-                          <label className="block text-[#d0c5af] mb-1 font-semibold">السعر بالدينار (IQD):</label>
+                          <label className="block text-ink-2 mb-1 font-semibold">السعر بالدينار (IQD):</label>
                           <input
                             type="number"
                             required
                             value={productForm.price || ''}
                             onChange={(e) => setProductForm({ ...productForm, price: Number(e.target.value) })}
-                            className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#ffd700] font-bold focus:outline-none focus:border-[#ffd700]"
+                            className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink font-bold focus:outline-none focus:border-brand"
                           />
                         </div>
                         <div>
-                          <label className="block text-[#d0c5af] mb-1 font-semibold">السعر القديم (خصم):</label>
+                          <label className="block text-ink-2 mb-1 font-semibold">السعر القديم (خصم):</label>
                           <input
                             type="number"
                             value={productForm.oldPrice || ''}
                             onChange={(e) => setProductForm({ ...productForm, oldPrice: Number(e.target.value) })}
-                            className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#99907c] focus:outline-none focus:border-[#ffd700]"
+                            className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink-2 focus:outline-none focus:border-brand"
                           />
                         </div>
                         <div>
-                          <label className="block text-[#d0c5af] mb-1 font-semibold">كمية المخزون:</label>
+                          <label className="block text-ink-2 mb-1 font-semibold">كمية المخزون:</label>
                           <input
                             type="number"
                             required
                             value={productForm.stock || 0}
                             onChange={(e) => setProductForm({ ...productForm, stock: Number(e.target.value) })}
-                            className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#f5f5f7] focus:outline-none focus:border-[#ffd700]"
+                            className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink focus:outline-none focus:border-brand"
                           />
                         </div>
                       </div>
 
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <label className="block text-[#d0c5af] mb-1 font-semibold">حالة التوفر:</label>
+                          <label className="block text-ink-2 mb-1 font-semibold">حالة التوفر:</label>
                           <select
                             value={productForm.status || 'in_stock'}
                             onChange={(e) => setProductForm({ ...productForm, status: e.target.value as any })}
-                            className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#f5f5f7] focus:outline-none focus:border-[#ffd700]"
+                            className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink focus:outline-none focus:border-brand"
                           >
                             <option value="in_stock">متوفر بالمستودع</option>
                             <option value="out_of_stock">نفذ المخزون</option>
@@ -1176,32 +1176,32 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                           </select>
                         </div>
                         <div>
-                          <label className="block text-[#d0c5af] mb-1 font-semibold">شارة تميز (Badge):</label>
+                          <label className="block text-ink-2 mb-1 font-semibold">شارة تميز (Badge):</label>
                           <input
                             type="text"
                             placeholder="مثال: الأكثر طلباً"
                             value={productForm.badge || ''}
                             onChange={(e) => setProductForm({ ...productForm, badge: e.target.value })}
-                            className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#ffd700] focus:outline-none focus:border-[#ffd700]"
+                            className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink focus:outline-none focus:border-brand"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-[#d0c5af] mb-1 font-semibold">رابط صورة المنتج (URL):</label>
+                        <label className="block text-ink-2 mb-1 font-semibold">رابط صورة المنتج (URL):</label>
                         <input
                           type="url"
                           required
                           value={productForm.image || ''}
                           onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
-                          className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#f5f5f7] focus:outline-none focus:border-[#ffd700]"
+                          className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink focus:outline-none focus:border-brand"
                         />
                       </div>
 
                       <div className="pt-3 flex gap-2">
                         <button
                           type="submit"
-                          className="flex-1 h-11 rounded-xl bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] font-bold text-xs flex items-center justify-center gap-1 shadow-md hover:brightness-110"
+                          className="flex-1 h-11 rounded-xl bg-gradient-to-r from-brand to-brand-2 text-on-brand font-bold text-xs flex items-center justify-center gap-1 shadow-md hover:brightness-110"
                         >
                           <Save className="w-4 h-4" />
                           <span>حفظ بيانات المنتج</span>
@@ -1212,7 +1212,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                             setEditingProduct(null);
                             setIsAddingProduct(false);
                           }}
-                          className="px-4 h-11 rounded-xl bg-[#181818] text-[#99907c] font-semibold text-xs"
+                          className="px-4 h-11 rounded-xl bg-surface-2 text-ink-2 font-semibold text-xs"
                         >
                           إلغاء
                         </button>
@@ -1227,24 +1227,24 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
           {/* TAB 4: INVENTORY */}
           {activeTab === 'inventory' && (
             <div className="space-y-5">
-              <div className="p-4 rounded-2xl bg-[#121212] border border-[#d4af37]/25 space-y-3">
+              <div className="p-4 rounded-2xl bg-surface-2 border border-brand/25 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Boxes className="w-5 h-5 text-[#ffd700]" />
-                    <h3 className="text-base font-bold text-[#ffd700]">مراقبة المخزون الفعلي</h3>
+                    <Boxes className="w-5 h-5 text-ink" />
+                    <h3 className="text-base font-bold text-ink">مراقبة المخزون الفعلي</h3>
                   </div>
-                  <span className="text-xs text-[#99907c]">يتم خصم المخزون آلياً مع كل طلب حقيقي</span>
+                  <span className="text-xs text-ink-2">يتم خصم المخزون آلياً مع كل طلب حقيقي</span>
                 </div>
-                <p className="text-xs text-[#d0c5af]">
+                <p className="text-xs text-ink-2">
                   إذا نفذ المخزون (0 قطع)؛ يتحول المنتج تلقائياً إلى حالة "نفذ المخزون" في واجهة المتجر ولا يمكن للزبون طلبه.
                 </p>
               </div>
 
               {/* Inventory Table */}
-              <div className="p-4 rounded-2xl bg-[#121212] border border-[#d4af37]/25 overflow-x-auto">
+              <div className="p-4 rounded-2xl bg-surface-2 border border-brand/25 overflow-x-auto">
                 <table className="w-full text-xs text-right">
                   <thead>
-                    <tr className="border-b border-[#222] text-[#99907c]">
+                    <tr className="border-b border-line text-ink-2">
                       <th className="py-2.5 px-3">المنتج</th>
                       <th className="py-2.5 px-3">السعر</th>
                       <th className="py-2.5 px-3">الكمية الحالية</th>
@@ -1252,33 +1252,33 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                       <th className="py-2.5 px-3">تزويد سريع (+Stock)</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#1c1c1c]">
+                  <tbody className="divide-y divide-line">
                     {products.map((p) => {
                       const isLow = p.stock <= 5;
                       const isOut = p.stock <= 0;
                       return (
-                        <tr key={p.id} className="hover:bg-[#181818] transition-colors">
+                        <tr key={p.id} className="hover:bg-surface-2 transition-colors">
                           <td className="py-3 px-3">
-                            <span className="font-bold text-[#f5f5f7] block">{p.name}</span>
-                            <span className="text-[10px] text-[#d4af37]">{p.brand}</span>
+                            <span className="font-bold text-ink block">{p.name}</span>
+                            <span className="text-[10px] text-ink">{p.brand}</span>
                           </td>
-                          <td className="py-3 px-3 font-bold text-[#ffd700]">{formatIQD(p.price)}</td>
+                          <td className="py-3 px-3 font-bold text-ink">{formatIQD(p.price)}</td>
                           <td className="py-3 px-3 font-mono font-bold text-sm">
-                            <span className={isOut ? 'text-[#ff453a]' : isLow ? 'text-[#ff9f0a]' : 'text-[#30d158]'}>
+                            <span className={isOut ? 'text-danger' : isLow ? 'text-warn' : 'text-success'}>
                               {p.stock}
                             </span>
                           </td>
                           <td className="py-3 px-3">
                             {isOut ? (
-                              <span className="px-2 py-0.5 rounded bg-[#ff453a]/20 text-[#ff453a] font-bold text-[10px]">
+                              <span className="px-2 py-0.5 rounded bg-danger/20 text-danger font-bold text-[10px]">
                                 نفاذ حرج
                               </span>
                             ) : isLow ? (
-                              <span className="px-2 py-0.5 rounded bg-[#ff9f0a]/20 text-[#ff9f0a] font-bold text-[10px]">
+                              <span className="px-2 py-0.5 rounded bg-warn/20 text-warn font-bold text-[10px]">
                                 مخزون منخفض
                               </span>
                             ) : (
-                              <span className="px-2 py-0.5 rounded bg-[#30d158]/20 text-[#30d158] font-bold text-[10px]">
+                              <span className="px-2 py-0.5 rounded bg-success/20 text-success font-bold text-[10px]">
                                 متوفر بشكل كافي
                               </span>
                             )}
@@ -1287,13 +1287,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                             <div className="flex items-center gap-1.5">
                               <button
                                 onClick={() => handleQuickRestock(p.id, 5)}
-                                className="px-2.5 py-1 rounded bg-[#1c180e] hover:bg-[#282215] border border-[#d4af37]/30 text-[#ffd700] font-bold text-[11px]"
+                                className="px-2.5 py-1 rounded bg-surface-2 hover:bg-surface-2 border border-brand/30 text-ink font-bold text-[11px]"
                               >
                                 +5 قطع
                               </button>
                               <button
                                 onClick={() => handleQuickRestock(p.id, 10)}
-                                className="px-2.5 py-1 rounded bg-[#1c180e] hover:bg-[#282215] border border-[#d4af37]/30 text-[#ffd700] font-bold text-[11px]"
+                                className="px-2.5 py-1 rounded bg-surface-2 hover:bg-surface-2 border border-brand/30 text-ink font-bold text-[11px]"
                               >
                                 +10 قطع
                               </button>
@@ -1313,18 +1313,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
             <div className="space-y-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-base font-bold text-[#ffd700]">سجل العملاء والزبائن</h3>
-                  <span className="text-xs text-[#99907c]">يتم تحديث إجمالي مشتريات كل عميل تلقائياً مع كل طلب</span>
+                  <h3 className="text-base font-bold text-ink">سجل العملاء والزبائن</h3>
+                  <span className="text-xs text-ink-2">يتم تحديث إجمالي مشتريات كل عميل تلقائياً مع كل طلب</span>
                 </div>
-                <span className="px-3 py-1 rounded-xl bg-[#121212] border border-[#d4af37]/20 text-xs font-bold text-[#ffd700]">
+                <span className="px-3 py-1 rounded-xl bg-surface-2 border border-brand/20 text-xs font-bold text-ink">
                   {customers.length} زبون مسجل
                 </span>
               </div>
 
-              <div className="p-4 rounded-2xl bg-[#121212] border border-[#d4af37]/25 overflow-x-auto">
+              <div className="p-4 rounded-2xl bg-surface-2 border border-brand/25 overflow-x-auto">
                 <table className="w-full text-xs text-right">
                   <thead>
-                    <tr className="border-b border-[#222] text-[#99907c]">
+                    <tr className="border-b border-line text-ink-2">
                       <th className="py-2.5 px-3">اسم الزبون</th>
                       <th className="py-2.5 px-3">الهاتف العراقي</th>
                       <th className="py-2.5 px-3">المحافظة</th>
@@ -1334,21 +1334,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                       <th className="py-2.5 px-3">اتصال</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#1c1c1c]">
+                  <tbody className="divide-y divide-line">
                     {customers.map((c) => (
-                      <tr key={c.id} className="hover:bg-[#181818] transition-colors">
-                        <td className="py-3 px-3 font-bold text-[#f5f5f7]">{c.name}</td>
-                        <td className="py-3 px-3 font-mono text-[#ffd700]" dir="ltr">
+                      <tr key={c.id} className="hover:bg-surface-2 transition-colors">
+                        <td className="py-3 px-3 font-bold text-ink">{c.name}</td>
+                        <td className="py-3 px-3 font-mono text-ink" dir="ltr">
                           {c.phone}
                         </td>
-                        <td className="py-3 px-3 text-[#d0c5af]">{c.governorate} ({c.city})</td>
-                        <td className="py-3 px-3 font-bold text-[#f5f5f7]">{c.totalOrders} طلبات</td>
-                        <td className="py-3 px-3 font-black text-[#ffd700]">{formatIQD(c.totalSpent)}</td>
-                        <td className="py-3 px-3 text-[#99907c]">{c.lastOrderDate}</td>
+                        <td className="py-3 px-3 text-ink-2">{c.governorate} ({c.city})</td>
+                        <td className="py-3 px-3 font-bold text-ink">{c.totalOrders} طلبات</td>
+                        <td className="py-3 px-3 font-black text-ink">{formatIQD(c.totalSpent)}</td>
+                        <td className="py-3 px-3 text-ink-2">{c.lastOrderDate}</td>
                         <td className="py-3 px-3">
                           <a
                             href={`tel:${c.phone}`}
-                            className="p-1.5 rounded-lg bg-[#30d158]/20 text-[#30d158] inline-flex items-center"
+                            className="p-1.5 rounded-lg bg-success/20 text-success inline-flex items-center"
                             title="اتصال"
                           >
                             <Phone className="w-3.5 h-3.5" />
@@ -1367,60 +1367,60 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Create Offer Form */}
-                <div className="p-5 rounded-2xl bg-[#121212] border border-[#d4af37]/25 space-y-3">
-                  <h4 className="text-sm font-bold text-[#ffd700]">إنشاء كود أو حملة خصم جديدة</h4>
+                <div className="p-5 rounded-2xl bg-surface-2 border border-brand/25 space-y-3">
+                  <h4 className="text-sm font-bold text-ink">إنشاء كود أو حملة خصم جديدة</h4>
                   <form onSubmit={handleAddOffer} className="space-y-3 text-xs">
                     <div>
-                      <label className="block text-[#d0c5af] mb-1 font-semibold">عنوان العرض:</label>
+                      <label className="block text-ink-2 mb-1 font-semibold">عنوان العرض:</label>
                       <input
                         type="text"
                         required
                         placeholder="مثال: خصم الصيف الحصري"
                         value={offerForm.title || ''}
                         onChange={(e) => setOfferForm({ ...offerForm, title: e.target.value })}
-                        className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#f5f5f7] focus:outline-none focus:border-[#ffd700]"
+                        className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink focus:outline-none focus:border-brand"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[#d0c5af] mb-1 font-semibold">كوبون الخصم (Promo Code):</label>
+                      <label className="block text-ink-2 mb-1 font-semibold">كوبون الخصم (Promo Code):</label>
                       <input
                         type="text"
                         required
                         placeholder="مثال: GOLD20"
                         value={offerForm.code || ''}
                         onChange={(e) => setOfferForm({ ...offerForm, code: e.target.value.toUpperCase() })}
-                        className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#ffd700] font-mono focus:outline-none focus:border-[#ffd700]"
+                        className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink font-mono focus:outline-none focus:border-brand"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="block text-[#d0c5af] mb-1 font-semibold">نوع الخصم:</label>
+                        <label className="block text-ink-2 mb-1 font-semibold">نوع الخصم:</label>
                         <select
                           value={offerForm.discountType || 'percentage'}
                           onChange={(e) => setOfferForm({ ...offerForm, discountType: e.target.value as any })}
-                          className="w-full h-10 px-2 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#f5f5f7]"
+                          className="w-full h-10 px-2 rounded-xl bg-surface-2 border border-brand/25 text-ink"
                         >
                           <option value="percentage">نسبة مئوية (%)</option>
                           <option value="fixed">مبلغ ثابت (د.ع)</option>
                         </select>
                       </div>
                       <div>
-                        <label className="block text-[#d0c5af] mb-1 font-semibold">قيمة الخصم:</label>
+                        <label className="block text-ink-2 mb-1 font-semibold">قيمة الخصم:</label>
                         <input
                           type="number"
                           required
                           value={offerForm.discountValue || ''}
                           onChange={(e) => setOfferForm({ ...offerForm, discountValue: Number(e.target.value) })}
-                          className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#ffd700] font-bold"
+                          className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink font-bold"
                         />
                       </div>
                     </div>
 
                     <button
                       type="submit"
-                      className="w-full h-11 mt-2 rounded-xl bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:brightness-110"
+                      className="w-full h-11 mt-2 rounded-xl bg-gradient-to-r from-brand to-brand-2 text-on-brand font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:brightness-110"
                     >
                       <Plus className="w-4 h-4" />
                       <span>تفعيل العرض فوراً</span>
@@ -1429,32 +1429,32 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                 </div>
 
                 {/* Active Offers List */}
-                <div className="md:col-span-2 p-5 rounded-2xl bg-[#121212] border border-[#d4af37]/25 space-y-3">
-                  <h4 className="text-sm font-bold text-[#ffd700]">العروض والحملات المفعلة ({offers.length})</h4>
+                <div className="md:col-span-2 p-5 rounded-2xl bg-surface-2 border border-brand/25 space-y-3">
+                  <h4 className="text-sm font-bold text-ink">العروض والحملات المفعلة ({offers.length})</h4>
                   <div className="space-y-2.5">
                     {offers.map((off) => (
                       <div
                         key={off.id}
-                        className="p-3.5 rounded-xl bg-[#181818] border border-[#d4af37]/15 flex items-center justify-between text-xs"
+                        className="p-3.5 rounded-xl bg-surface-2 border border-brand/15 flex items-center justify-between text-xs"
                       >
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-[#f5f5f7] text-sm">{off.title}</span>
+                            <span className="font-bold text-ink text-sm">{off.title}</span>
                             {off.code && (
-                              <span className="px-2 py-0.5 rounded bg-[#ffd700]/20 text-[#ffd700] font-mono font-bold">
+                              <span className="px-2 py-0.5 rounded bg-gold/20 text-ink font-mono font-bold">
                                 {off.code}
                               </span>
                             )}
                           </div>
-                          <p className="text-[#99907c]">{off.description}</p>
-                          <span className="text-[#30d158] font-bold">
+                          <p className="text-ink-2">{off.description}</p>
+                          <span className="text-success font-bold">
                             قيمة الخصم: {off.discountValue} {off.discountType === 'percentage' ? '%' : 'د.ع'}
                           </span>
                         </div>
 
                         <button
                           onClick={() => storeStorage.deleteOffer(off.id)}
-                          className="p-2 rounded-lg bg-[#221010] text-[#ff453a] hover:bg-[#331515]"
+                          className="p-2 rounded-lg bg-danger-soft text-danger hover:bg-danger-soft"
                           title="حذف العرض"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -1470,33 +1470,33 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
           {/* TAB 7: SETTINGS */}
           {activeTab === 'settings' && (
             <div className="max-w-xl space-y-6">
-              <div className="p-5 rounded-2xl bg-[#121212] border border-[#d4af37]/25 space-y-4">
-                <h3 className="text-sm font-bold text-[#ffd700]">إعدادات المتجر والتوصيل والأمان</h3>
+              <div className="p-5 rounded-2xl bg-surface-2 border border-brand/25 space-y-4">
+                <h3 className="text-sm font-bold text-ink">إعدادات المتجر والتوصيل والأمان</h3>
 
                 <form onSubmit={handleSaveSettings} className="space-y-3 text-xs">
                   <div>
-                    <label className="block text-[#d0c5af] mb-1 font-semibold">اسم المتجر الرسمي:</label>
+                    <label className="block text-ink-2 mb-1 font-semibold">اسم المتجر الرسمي:</label>
                     <input
                       type="text"
                       value={settingsForm.storeName}
                       onChange={(e) => setSettingsForm({ ...settingsForm, storeName: e.target.value })}
-                      className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#f5f5f7]"
+                      className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[#d0c5af] mb-1 font-semibold">شعار ووصف المتجر:</label>
+                    <label className="block text-ink-2 mb-1 font-semibold">شعار ووصف المتجر:</label>
                     <input
                       type="text"
                       value={settingsForm.subtitle}
                       onChange={(e) => setSettingsForm({ ...settingsForm, subtitle: e.target.value })}
-                      className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#f5f5f7]"
+                      className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[#d0c5af] mb-1 font-semibold">
+                      <label className="block text-ink-2 mb-1 font-semibold">
                         أجور التوصيل الثابتة (د.ع):
                       </label>
                       <input
@@ -1505,11 +1505,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                         onChange={(e) =>
                           setSettingsForm({ ...settingsForm, fixedDeliveryFee: Number(e.target.value) })
                         }
-                        className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#ffd700] font-bold"
+                        className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink font-bold"
                       />
                     </div>
                     <div>
-                      <label className="block text-[#d0c5af] mb-1 font-semibold">
+                      <label className="block text-ink-2 mb-1 font-semibold">
                         رمز PIN للدخول للإدارة (4 أرقام):
                       </label>
                       <input
@@ -1517,36 +1517,36 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                         maxLength={4}
                         value={settingsForm.adminPin}
                         onChange={(e) => setSettingsForm({ ...settingsForm, adminPin: e.target.value })}
-                        className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#ffd700] font-mono font-bold text-center"
+                        className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink font-mono font-bold text-center"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[#d0c5af] mb-1 font-semibold">هاتف المتجر المعتمد:</label>
+                      <label className="block text-ink-2 mb-1 font-semibold">هاتف المتجر المعتمد:</label>
                       <input
                         type="text"
                         value={settingsForm.phone}
                         onChange={(e) => setSettingsForm({ ...settingsForm, phone: e.target.value })}
-                        className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#f5f5f7] font-mono"
+                        className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink font-mono"
                         dir="ltr"
                       />
                     </div>
                     <div>
-                      <label className="block text-[#d0c5af] mb-1 font-semibold">رقم الواتساب:</label>
+                      <label className="block text-ink-2 mb-1 font-semibold">رقم الواتساب:</label>
                       <input
                         type="text"
                         value={settingsForm.whatsapp}
                         onChange={(e) => setSettingsForm({ ...settingsForm, whatsapp: e.target.value })}
-                        className="w-full h-10 px-3 rounded-xl bg-[#181818] border border-[#d4af37]/25 text-[#f5f5f7] font-mono"
+                        className="w-full h-10 px-3 rounded-xl bg-surface-2 border border-brand/25 text-ink font-mono"
                         dir="ltr"
                       />
                     </div>
                   </div>
 
                   {pinChangeMessage && (
-                    <p className="text-xs text-[#30d158] font-bold animate-fadeIn">
+                    <p className="text-xs text-success font-bold animate-fade-in">
                       {pinChangeMessage}
                     </p>
                   )}
@@ -1554,7 +1554,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose 
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full h-11 rounded-xl bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:brightness-110 cursor-pointer"
+                      className="w-full h-11 rounded-xl bg-gradient-to-r from-brand to-brand-2 text-on-brand font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:brightness-110 cursor-pointer"
                     >
                       <Save className="w-4 h-4" />
                       <span>حفظ التعديلات</span>

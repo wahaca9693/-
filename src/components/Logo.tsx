@@ -7,135 +7,99 @@ interface LogoProps {
   onClick?: () => void;
 }
 
+const SIZE_MAP = {
+  sm: { mark: 38, word: 'text-base', sub: 'text-[10px]' },
+  md: { mark: 46, word: 'text-lg', sub: 'text-[11px]' },
+  lg: { mark: 68, word: 'text-2xl', sub: 'text-xs' },
+  xl: { mark: 108, word: 'text-4xl', sub: 'text-sm' },
+} as const;
+
+/**
+ * شعار مركز المنار للموبايل.
+ * الفكرة: شعاع منارة (Beacon) — مثلث ضوء ينطلق من قاعدة داكنة،
+ * بتدرّج العلامة indigo ← cyan مع لمسة ذهبية تعكس الهوية الفاخرة.
+ */
 export const Logo: React.FC<LogoProps> = ({
   size = 'md',
   showSubtitle = true,
   className = '',
   onClick,
 }) => {
-  const sizeMap = {
-    sm: { icon: 38, text: 'text-sm', sub: 'text-[9px]' },
-    md: { icon: 48, text: 'text-base', sub: 'text-[11px]' },
-    lg: { icon: 84, text: 'text-2xl', sub: 'text-sm' },
-    xl: { icon: 140, text: 'text-4xl', sub: 'text-lg' },
-  };
-
-  const current = sizeMap[size];
+  const s = SIZE_MAP[size];
+  const glyphId = `mnr-beam-${size}`;
 
   return (
     <div
       onClick={onClick}
-      className={`inline-flex items-center gap-3 select-none cursor-pointer ${className}`}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
+      className={`inline-flex items-center gap-3 select-none ${onClick ? 'cursor-pointer' : ''} ${className}`}
     >
-      {/* Official Circular Golden Crest */}
-      <div
-        className="relative flex-shrink-0 flex items-center justify-center rounded-full bg-gradient-to-b from-[#18150c] to-[#080808] border border-[#d4af37]/60 shadow-[0_0_20px_rgba(212,175,55,0.25)]"
-        style={{ width: current.icon, height: current.icon }}
+      {/* العلامة */}
+      <span
+        className="relative grid place-items-center rounded-2xl shrink-0 shadow-float"
+        style={{ width: s.mark, height: s.mark }}
       >
-        {/* Ambient Gold Radial Glow */}
-        <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,215,0,0.18)_0%,transparent_75%)] pointer-events-none" />
-
-        <svg
-          viewBox="0 0 100 100"
-          className="w-[88%] h-[88%] drop-shadow-[0_2px_6px_rgba(212,175,55,0.4)]"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg viewBox="0 0 48 48" className="w-full h-full" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
-            {/* Linear Gold Gradient */}
-            <linearGradient id="goldMetallic" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#fff6c7" />
-              <stop offset="25%" stopColor="#ffd700" />
-              <stop offset="50%" stopColor="#d4af37" />
-              <stop offset="75%" stopColor="#aa7c11" />
-              <stop offset="100%" stopColor="#ffd700" />
-            </linearGradient>
-
-            <linearGradient id="goldShine" x1="0%" y1="50%" x2="100%" y2="50%">
-              <stop offset="0%" stopColor="#d4af37" />
-              <stop offset="50%" stopColor="#fff8db" />
-              <stop offset="100%" stopColor="#d4af37" />
+            <linearGradient id={`${glyphId}-bg`} x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style={{ stopColor: 'var(--mnr-brand)' }} />
+              <stop offset="60%" style={{ stopColor: 'var(--mnr-brand-2)' }} />
+              <stop offset="100%" style={{ stopColor: 'var(--mnr-gold)' }} />
             </linearGradient>
           </defs>
 
-          {/* Double Concentric Gold Rings */}
-          <circle cx="50" cy="50" r="46" stroke="url(#goldMetallic)" strokeWidth="2.2" />
-          <circle cx="50" cy="50" r="42" stroke="url(#goldMetallic)" strokeWidth="1" strokeDasharray="3 2" opacity="0.75" />
+          {/* المربّع الخلفي */}
+          <rect width="48" height="48" rx="14" style={{ fill: `url(#${glyphId}-bg)` }} />
 
-          {/* Golden Royal Crown */}
-          <g transform="translate(30, 14) scale(0.4)">
-            {/* Crown Base */}
-            <path
-              d="M10 50 L20 70 L80 70 L90 50 L75 35 L50 60 L25 35 Z"
-              fill="url(#goldMetallic)"
-            />
-            {/* Crown Peaks */}
-            <path
-              d="M15 55 L30 15 L50 45 L70 15 L85 55 Z"
-              fill="url(#goldShine)"
-            />
-            {/* Jewels */}
-            <circle cx="30" cy="12" r="4" fill="#ffffff" stroke="#ffd700" strokeWidth="1" />
-            <circle cx="50" cy="8" r="5" fill="#ffffff" stroke="#ffd700" strokeWidth="1" />
-            <circle cx="70" cy="12" r="4" fill="#ffffff" stroke="#ffd700" strokeWidth="1" />
+          {/* شعاعان يخرجان من المصباح */}
+          <g style={{ fill: 'var(--mnr-on-brand)' }}>
+            <path d="M24 15.5 L11 6.5 L11 13 Z" opacity="0.45" />
+            <path d="M24 15.5 L37 6.5 L37 13 Z" opacity="0.45" />
+            <path d="M24 13 L16 5.5 L16 10 Z" opacity="0.75" />
+            <path d="M24 13 L32 5.5 L32 10 Z" opacity="0.75" />
           </g>
 
-          {/* M.N.R Central Bold Monogram */}
-          <text
-            x="50"
-            y="54"
-            textAnchor="middle"
-            fill="url(#goldMetallic)"
-            fontFamily="'Cinzel', 'Playfair Display', serif"
-            fontWeight="900"
-            fontSize="18.5"
-            letterSpacing="1"
-          >
-            M.N.R
-          </text>
-
-          {/* Smartphone Outline Icon in Center Base */}
-          <g transform="translate(42.5, 60)">
-            <rect
-              x="0"
-              y="0"
-              width="15"
-              height="23"
-              rx="2.5"
-              stroke="url(#goldMetallic)"
-              strokeWidth="1.4"
-              fill="#0a0a0a"
-            />
-            {/* Screen Notch & Home Button */}
-            <circle cx="7.5" cy="19.5" r="1.2" fill="url(#goldMetallic)" />
-            <line x1="5" y1="2.5" x2="10" y2="2.5" stroke="url(#goldMetallic)" strokeWidth="0.9" strokeLinecap="round" />
-          </g>
-
-          {/* Decorative Wings / Laurels flanking the phone */}
+          {/* جسم المنارة */}
           <path
-            d="M20 66 C26 73, 34 76, 40 76 C35 73, 29 70, 24 64 Z"
-            fill="url(#goldMetallic)"
+            d="M20 21 H28 L29.2 36 H18.8 Z"
+            style={{ fill: 'var(--mnr-on-brand)', fillOpacity: 0.95 }}
           />
-          <path
-            d="M80 66 C74 73, 66 76, 60 76 C65 73, 71 70, 76 64 Z"
-            fill="url(#goldMetallic)"
+
+          {/* المصباح */}
+          <circle cx="24" cy="17.5" r="3.4" style={{ fill: 'var(--mnr-on-brand)' }} />
+
+          {/* القاعدة */}
+          <rect
+            x="16.5"
+            y="36.5"
+            width="15"
+            height="3"
+            rx="1.5"
+            style={{ fill: 'var(--mnr-on-brand)', fillOpacity: 0.95 }}
           />
         </svg>
-      </div>
 
-      {/* Typography Block */}
+        {/* هالة ناعمة خلف العلامة */}
+        <span
+          className="absolute -inset-3 -z-10 rounded-3xl blur-2xl opacity-45 animate-beacon"
+          style={{
+            background:
+              'radial-gradient(circle at 50% 40%, var(--mnr-brand) 0%, var(--mnr-brand-2) 45%, transparent 72%)',
+          }}
+        />
+      </span>
+
+      {/* الاسم */}
       {showSubtitle && (
-        <div className="flex flex-col text-right">
-          <div className="flex items-center gap-1.5">
-            <span className={`font-bold tracking-wider gold-gradient-text ${current.text}`}>
-              M.N.R
-            </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#d4af37] animate-pulse" />
-          </div>
-          <span className={`text-[#d0c5af] font-medium tracking-tight ${current.sub}`}>
-            مركز المنار للموبايل
+        <span className="flex flex-col text-right leading-tight">
+          <span className="flex items-center gap-1.5">
+            <span className={`mnr-gradient-text mnr-h2 tracking-wider ${s.word}`}>M.N.R</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-gold" aria-hidden="true" />
           </span>
-        </div>
+          <span className={`text-ink-2 font-medium ${s.sub}`}>مركز المنار للموبايل</span>
+        </span>
       )}
     </div>
   );

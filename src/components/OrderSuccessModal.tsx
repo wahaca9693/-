@@ -1,6 +1,8 @@
 import React from 'react';
 import { Order } from '../types/store';
-import { CheckCircle2, Copy, Truck, ExternalLink, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { CheckCircle2, Copy, Truck, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Modal } from './ui/Modal';
+import { formatIQD } from '../lib/format';
 
 interface OrderSuccessModalProps {
   order: Order | null;
@@ -8,110 +10,85 @@ interface OrderSuccessModalProps {
   onTrackOrder: (orderNumber: string, phone: string) => void;
 }
 
-export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
-  order,
-  onClose,
-  onTrackOrder,
-}) => {
+export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({ order, onClose, onTrackOrder }) => {
   if (!order) return null;
 
-  const formatIQD = (val: number) => {
-    return new Intl.NumberFormat('en-US').format(val) + ' د.ع';
-  };
-
   const copyOrderNumber = () => {
-    navigator.clipboard.writeText(order.orderNumber);
-    alert('تم نسخ رقم الطلب بنجاح: ' + order.orderNumber);
+    navigator.clipboard?.writeText(order.orderNumber).catch(() => undefined);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-fadeIn">
-      <div
-        className="relative w-full max-w-lg rounded-3xl bg-gradient-to-b from-[#141414] to-[#080808] border border-[#d4af37]/40 shadow-[0_0_50px_rgba(212,175,55,0.25)] p-6 sm:p-8 text-center text-[#f5f5f7]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Animated Golden Check Crest */}
-        <div className="relative w-20 h-20 mx-auto rounded-full bg-[#1c180e] border-2 border-[#ffd700] flex items-center justify-center text-[#ffd700] shadow-[0_0_25px_rgba(255,215,0,0.4)] mb-4">
-          <CheckCircle2 className="w-10 h-10 animate-scale" />
-          <div className="absolute -inset-1 rounded-full bg-[#ffd700]/20 animate-ping pointer-events-none" />
+    <Modal isOpen={Boolean(order)} onClose={onClose} size="sm" disableOutsideClose>
+      <div className="p-6 sm:p-8 text-center">
+        <div className="relative w-20 h-20 mx-auto mb-5">
+          <span className="absolute -inset-2 rounded-full bg-success-soft animate-ping" />
+          <span className="relative w-full h-full rounded-full bg-success-soft border-2 border-success grid place-items-center">
+            <CheckCircle2 className="w-10 h-10 text-success" />
+          </span>
         </div>
 
-        {/* Success Headings */}
-        <h2 className="text-2xl font-black gold-gradient-text">
-          تم استلام طلبك بنجاح ✓
-        </h2>
-        <p className="text-sm text-[#e5e2e1] font-semibold mt-1">
-          شكراً لتسوقك من مركز المنار للموبايل M.N.R
-        </p>
-        <p className="text-xs text-[#99907c] mt-1">
-          طلبك الآن قيد المراجعة والتجهيز في مستودعاتنا المركزية.
-        </p>
+        <h2 className="mnr-h1 text-2xl mnr-gradient-text">تم استلام طلبك بنجاح</h2>
+        <p className="text-sm font-bold text-ink mt-1.5">شكراً لتسوّقك من مركز المنار للموبايل M.N.R</p>
+        <p className="text-xs text-ink-3 mt-1">طلبك الآن قيد المراجعة والتجهيز في مستودعاتنا المركزية.</p>
 
-        {/* Unique Order Code Box */}
-        <div className="mt-5 p-4 rounded-2xl bg-[#121212] border border-[#d4af37]/30 space-y-2">
-          <span className="text-xs text-[#99907c] block">الرقم المرجعي الموحد للطلب:</span>
-          <div className="flex items-center justify-center gap-3">
-            <span className="text-xl sm:text-2xl font-black text-[#ffd700] font-mono tracking-wider" dir="ltr">
+        {/* الرقم المرجعي */}
+        <div className="mt-5 p-4 rounded-xl border border-line bg-surface-2">
+          <p className="text-[11px] text-ink-3">الرقم المرجعي للطلب</p>
+          <div className="flex items-center justify-center gap-2.5 mt-1.5">
+            <span className="mnr-num text-xl sm:text-2xl font-extrabold text-gold tracking-wider">
               {order.orderNumber}
             </span>
             <button
+              type="button"
               onClick={copyOrderNumber}
-              className="p-1.5 rounded-lg bg-[#1c1b1b] hover:bg-[#252012] border border-[#d4af37]/20 text-[#d4af37] transition-colors"
-              title="نسخ رقم الطلب"
+              aria-label="نسخ رقم الطلب"
+              className="w-8 h-8 grid place-items-center rounded-lg border border-line text-ink-3 hover:text-brand-ink hover:bg-brand-soft transition-colors"
             >
               <Copy className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* Order Brief Ledger */}
-        <div className="mt-4 p-3.5 rounded-2xl bg-[#0d0d0d] border border-[#d4af37]/15 text-xs text-right space-y-2">
-          <div className="flex justify-between">
-            <span className="text-[#99907c]">اسم المستلم:</span>
-            <span className="font-bold text-[#f5f5f7]">{order.customerName}</span>
+        {/* الملخّص */}
+        <dl className="mt-3 p-4 rounded-xl border border-line bg-surface-2 text-xs space-y-2 text-right">
+          <div className="flex justify-between gap-3">
+            <dt className="text-ink-3">اسم المستلم</dt>
+            <dd className="font-extrabold text-ink">{order.customerName}</dd>
           </div>
-          <div className="flex justify-between">
-            <span className="text-[#99907c]">محافظة التسليم:</span>
-            <span className="font-bold text-[#f5f5f7]">{order.governorate} ({order.city})</span>
+          <div className="flex justify-between gap-3">
+            <dt className="text-ink-3">محافظة التسليم</dt>
+            <dd className="font-extrabold text-ink">{order.governorate} — {order.city}</dd>
           </div>
-          <div className="flex justify-between">
-            <span className="text-[#99907c]">أقرب نقطة دالة:</span>
-            <span className="text-[#ffd700] font-medium">{order.nearestLandmark}</span>
+          <div className="flex justify-between gap-3">
+            <dt className="text-ink-3">أقرب نقطة دالة</dt>
+            <dd className="font-extrabold text-ink">{order.nearestLandmark}</dd>
           </div>
-          <div className="flex justify-between pt-1 border-t border-[#d4af37]/15 font-bold">
-            <span className="text-[#d0c5af]">الإجمالي المطلوب (مع التوصيل):</span>
-            <span className="text-sm text-[#ffd700]">{formatIQD(order.total)}</span>
+          <div className="flex justify-between gap-3 pt-2 border-t border-line">
+            <dt className="text-ink-2 font-bold">الإجمالي (مع التوصيل)</dt>
+            <dd className="text-sm font-extrabold text-gold mnr-num">{formatIQD(order.total)}</dd>
           </div>
-        </div>
+        </dl>
 
-        {/* Trust Note */}
-        <div className="mt-3 flex items-center justify-center gap-2 text-[11px] text-[#30d158]">
+        <p className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-success font-semibold">
           <ShieldCheck className="w-4 h-4" />
-          <span>مشمول بضمان M.N.R الذهبي وحق الفحص قبل استلام الشحنة</span>
-        </div>
+          مشمول بضمان M.N.R وحق الفحص قبل استلام الشحنة
+        </p>
 
-        {/* Action Buttons */}
-        <div className="grid grid-cols-2 gap-3 mt-6">
+        <div className="grid sm:grid-cols-2 gap-2.5 mt-6">
           <button
-            onClick={() => {
-              onTrackOrder(order.orderNumber, order.phone);
-              onClose();
-            }}
-            className="h-12 rounded-xl bg-gradient-to-r from-[#ffd700] via-[#d4af37] to-[#b8860b] text-[#0a0a0a] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+            type="button"
+            onClick={() => onTrackOrder(order.orderNumber, order.phone)}
+            className="mnr-btn mnr-btn-primary h-12 text-xs"
           >
             <Truck className="w-4 h-4" />
-            <span>متابعة وتتبع الطلب</span>
+            متابعة وتتبع الطلب
           </button>
-
-          <button
-            onClick={onClose}
-            className="h-12 rounded-xl bg-[#141414] hover:bg-[#1a160d] border border-[#d4af37]/30 text-[#f5f5f7] font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
-          >
-            <span>العودة للمتجر</span>
+          <button type="button" onClick={onClose} className="mnr-btn mnr-btn-soft h-12 text-xs">
+            العودة للمتجر
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 };

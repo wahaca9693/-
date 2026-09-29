@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Product, ProductCategory, CartItem, Order } from './types/store';
 import { storeStorage } from './services/storeStorage';
 import { CATEGORIES_LIST } from './data/initialData';
+import { useTheme } from './hooks/useTheme';
+
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { CategoryBar } from './components/CategoryBar';
@@ -21,25 +23,38 @@ import { LoadingScreen } from './components/LoadingScreen';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { AdminAuthModal } from './components/Admin/AdminAuthModal';
 import { AdminDashboard } from './components/Admin/AdminDashboard';
-import { Sparkles, SlidersHorizontal, CheckCircle2, ArrowUpDown } from 'lucide-react';
+import { SectionHeader } from './components/ui/SectionHeader';
+
+import { CheckCircle2, LayoutGrid, PackageSearch, RotateCcw } from 'lucide-react';
+
+type SortBy = 'featured' | 'price-asc' | 'price-desc' | 'rating';
+
+const BRANDS = ['all', 'Apple', 'Samsung', 'Anker', 'Sony', 'M.N.R'];
+
+const SORTS: { value: SortBy; label: string }[] = [
+  { value: 'featured', label: 'الأكثر طلباً' },
+  { value: 'price-asc', label: 'السعر: من الأقل' },
+  { value: 'price-desc', label: 'السعر: من الأعلى' },
+  { value: 'rating', label: 'الأعلى تقييماً' },
+];
 
 export default function App() {
-  // Loading Screen State
+  const { theme, toggleTheme } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
 
-  // Core Data States (Synchronized via reactive subscriptions)
+  /* ---------------------------- البيانات ---------------------------- */
   const [products, setProducts] = useState<Product[]>(() => storeStorage.getProducts());
   const [cart, setCart] = useState<CartItem[]>(() => storeStorage.getCart());
   const [wishlist, setWishlist] = useState<string[]>(() => storeStorage.getWishlist());
   const [offers, setOffers] = useState(() => storeStorage.getOffers());
   const [settings, setSettings] = useState(() => storeStorage.getSettings());
 
-  // Category & Brand & Sorting Filtering
+  /* --------------------------- التصفية والفرز --------------------------- */
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'all'>('all');
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'rating'>('featured');
+  const [sortBy, setSortBy] = useState<SortBy>('featured');
 
-  // Modals & Drawers Toggles
+  /* ------------------------- النوافذ والأدراج ------------------------- */
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -48,102 +63,68 @@ export default function App() {
   const [isAdminAuthOpen, setIsAdminAuthOpen] = useState(false);
   const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState(false);
 
-  // Selected Product for Details Modal
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
-  // Created Order for Success Screen
   const [successOrder, setSuccessOrder] = useState<Order | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
 
-  // Toast Notification for Micro-interactions
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const deliveryFee = settings.fixedDeliveryFee || 5000;
 
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 2400);
-  };
-
-  // Subscribe to storage changes
+  /* ------------------------ مزامنة التخزين ------------------------ */
   useEffect(() => {
-    const unsubProducts = storeStorage.subscribe('products-updated', (data) => {
-      setProducts([...(data as Product[])]);
-    });
-    const unsubCart = storeStorage.subscribe('cart-updated', (data) => {
-      setCart([...(data as CartItem[])]);
-    });
-    const unsubWishlist = storeStorage.subscribe('wishlist-updated', (data) => {
-      setWishlist([...(data as string[])]);
-    });
-    const unsubOffers = storeStorage.subscribe('offers-updated', (data) => {
-      setOffers([...(data as any[])]);
-    });
-    const unsubSettings = storeStorage.subscribe('settings-updated', (data) => {
-      setSettings(data as any);
-    });
-
-    return () => {
-      unsubProducts();
-      unsubCart();
-      unsubWishlist();
-      unsubOffers();
-      unsubSettings();
-    };
+    const unsubs = [
+      storeStorage.subscribe('products-updated', (d) => setProducts([...(d as Product[])])),
+      storeStorage.subscribe('cart-updated', (d) => setCart([...(d as CartItem[])])),
+      storeStorage.subscribe('wishlist-updated', (d) => setWishlist([...(d as string[])])),
+      storeStorage.subscribe('offers-updated', (d) => setOffers([...(d as any[])])),
+      storeStorage.subscribe('settings-updated', (d) => setSettings(d as any)),
+    ];
+    return () => unsubs.forEach((unsub) => unsub());
   }, []);
 
-  // Filter and sort products
-  const filteredProducts = products
-    .filter((p) => {
-      const matchCat = selectedCategory === 'all' || p.category === selectedCategory;
+  /* --------------------------- إشعارات صغيرة --------------------------- */
+  const showToast = useCallback((message: string) => {
+    setToast(message);
+    window.setTimeout(() => setToast((current) => (current === message ? null : current)), 2400);
+  }, []);
+
+  /* ------------------------ تصفية وفرز المنتجات ------------------------ */
+  const filteredProducts = useMemo(() => {
+    const list = products.filter((p) => {
+      const matchCategory = selectedCategory === 'all' || p.category === selectedCategory;
       const matchBrand = selectedBrand === 'all' || p.brand.toLowerCase() === selectedBrand.toLowerCase();
-      return matchCat && matchBrand;
-    })
-    .sort((a, b) => {
+      return matchCategory && matchBrand;
+    });
+
+    return [...list].sort((a, b) => {
       if (sortBy === 'price-asc') return a.price - b.price;
       if (sortBy === 'price-desc') return b.price - a.price;
       if (sortBy === 'rating') return b.rating - a.rating;
-      return 0; // default featured
+      return Number(Boolean(b.featured)) - Number(Boolean(a.featured));
     });
+  }, [products, selectedCategory, selectedBrand, sortBy]);
 
-  // Unique Brands in catalog
-  const availableBrands = ['all', 'Apple', 'Samsung', 'Anker', 'Sony', 'M.N.R'];
+  const currentCategory = CATEGORIES_LIST.find((c) => c.id === selectedCategory);
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Current category metadata
-  const currentCategoryInfo = CATEGORIES_LIST.find((c) => c.id === selectedCategory);
-
-  // Cart Handlers
-  const handleAddToCart = (product: Product, quantity = 1) => {
+  /* ----------------------------- المعالجات ----------------------------- */
+  const addToCart = (product: Product, quantity = 1) => {
     storeStorage.addToCart(product, quantity);
-    showToast(`تمت إضافة ${product.name.slice(0, 22)}... إلى السلة بنجاح ✓`);
+    showToast(`تمت إضافة «${product.name.slice(0, 20)}» إلى السلة`);
   };
 
-  const handleQuickBuy = (product: Product, quantity = 1) => {
+  const quickBuy = (product: Product, quantity = 1) => {
     storeStorage.addToCart(product, quantity);
     setIsCartOpen(false);
     setIsCheckoutOpen(true);
   };
 
-  const handleUpdateCartQuantity = (productId: string, quantity: number) => {
-    storeStorage.updateCartQuantity(productId, quantity);
-  };
-
-  const handleRemoveFromCart = (productId: string) => {
-    storeStorage.removeFromCart(productId);
-  };
-
-  const handleClearCart = () => {
-    storeStorage.clearCart();
-  };
-
-  // Wishlist Handlers
-  const handleToggleWishlist = (productId: string) => {
-    const isSaved = wishlist.includes(productId);
+  const toggleWishlist = (productId: string) => {
+    const saved = wishlist.includes(productId);
     storeStorage.toggleWishlist(productId);
-    showToast(isSaved ? 'تمت إزالة المنتج من المفضلة' : 'تم حفظ المنتج في المفضلة ❤️');
+    showToast(saved ? 'تمت الإزالة من المفضلة' : 'تم حفظ المنتج في المفضلة');
   };
 
-  // Order Submission Handler
-  const handleOrderSubmitted = (orderData: {
+  const submitOrder = (data: {
     customerName: string;
     phone: string;
     governorate: string;
@@ -155,234 +136,203 @@ export default function App() {
     paymentMethod: 'cod';
   }): Order => {
     const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-    const orderItems = cart.map((item) => ({
-      productId: item.product.id,
-      productName: item.product.name,
-      productImage: item.product.image,
-      unitPrice: item.product.price,
-      quantity: item.quantity,
-      totalPrice: item.product.price * item.quantity,
-    }));
 
-    const newOrder = storeStorage.createOrder({
-      customerName: orderData.customerName,
-      phone: orderData.phone,
-      governorate: orderData.governorate,
-      city: orderData.city,
-      district: orderData.district,
-      address: orderData.address,
-      nearestLandmark: orderData.nearestLandmark,
-      notes: orderData.notes,
-      items: orderItems,
+    const order = storeStorage.createOrder({
+      ...data,
+      items: cart.map((item) => ({
+        productId: item.product.id,
+        productName: item.product.name,
+        productImage: item.product.image,
+        unitPrice: item.product.price,
+        quantity: item.quantity,
+        totalPrice: item.product.price * item.quantity,
+      })),
       subtotal,
-      deliveryFee: settings.fixedDeliveryFee || 5000,
-      total: subtotal + (settings.fixedDeliveryFee || 5000),
+      deliveryFee,
+      total: subtotal + deliveryFee,
       status: 'new',
-      paymentMethod: 'cod',
     });
 
-    // Clear cart & close checkout
     storeStorage.clearCart();
     setIsCheckoutOpen(false);
-    setSuccessOrder(newOrder);
-
-    return newOrder;
+    setSuccessOrder(order);
+    return order;
   };
 
-  // Smooth Section Scroller
   const scrollToSection = (id: string) => {
     if (id === 'hero') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
+      return;
     }
+    const target = CATEGORIES_LIST.find((c) => c.id === id);
+    if (target) {
+      setSelectedCategory(target.id);
+    }
+    document.getElementById(id === 'products' ? 'products-catalog' : id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const totalCartItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const resetFilters = () => {
+    setSelectedCategory('all');
+    setSelectedBrand('all');
+  };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-[#f5f5f7] flex flex-col font-sans selection:bg-[#d4af37]/30 selection:text-[#ffd700]">
-      {/* 1. Cinematic Loading Screen on initial entry */}
-      {isLoading && (
-        <LoadingScreen onFinish={() => setIsLoading(false)} />
-      )}
+    <div className="min-h-screen flex flex-col bg-canvas text-ink">
+      {isLoading && <LoadingScreen onFinish={() => setIsLoading(false)} />}
 
-      {/* Floating Micro-interaction Toast */}
-      {toastMessage && (
-        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-50 pointer-events-none animate-slideDown">
-          <div className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#181818]/95 border border-[#d4af37]/50 text-xs sm:text-sm font-bold text-[#ffd700] shadow-2xl backdrop-blur-md">
-            <CheckCircle2 className="w-4 h-4 text-[#30d158]" />
-            <span>{toastMessage}</span>
+      {/* إشعار علوي */}
+      {toast && (
+        <div className="fixed top-24 left-1/2 z-[70] pointer-events-none animate-toast">
+          <div className="mnr-glass flex items-center gap-2 px-4 py-2.5 rounded-xl border border-line shadow-float text-xs sm:text-sm font-bold text-ink">
+            <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
+            <span>{toast}</span>
           </div>
         </div>
       )}
 
-      {/* 2. Sticky Luxury Navbar with smart auto-hide on scroll down */}
       <Navbar
-        cartCount={totalCartItemsCount}
+        cartCount={cartCount}
         wishlistCount={wishlist.length}
         activeCategory={selectedCategory}
-        onSelectCategory={(cat) => {
-          setSelectedCategory(cat);
-          scrollToSection('products-catalog');
-        }}
+        theme={theme}
+        onToggleTheme={toggleTheme}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenWishlist={() => setIsWishlistOpen(true)}
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenAdmin={() => setIsAdminAuthOpen(true)}
         onOpenTracking={() => setIsTrackingOpen(true)}
         onScrollToSection={scrollToSection}
+        onSelectCategory={(cat) => {
+          setSelectedCategory(cat);
+          document.getElementById('products-catalog')?.scrollIntoView({ behavior: 'smooth' });
+        }}
       />
 
-      {/* 3. Main Content Flow - padding top offset for fixed navbar */}
-      <main className="flex-1 flex flex-col w-full pt-16 sm:pt-20 pb-20 lg:pb-0">
-        {/* Hero Section */}
+      <main className="flex-1 flex flex-col w-full pt-[136px] sm:pt-[148px] pb-24 lg:pb-0">
         <Hero
-          onShopNow={() => scrollToSection('products-catalog')}
-          onExploreProducts={() => scrollToSection('categories')}
+          onShopNow={() => document.getElementById('products-catalog')?.scrollIntoView({ behavior: 'smooth' })}
           onOpenTracking={() => setIsTrackingOpen(true)}
           onSelectCategory={(cat) => {
             setSelectedCategory(cat);
-            scrollToSection('products-catalog');
+            document.getElementById('products-catalog')?.scrollIntoView({ behavior: 'smooth' });
           }}
         />
 
-        {/* Categories Bar & Live Filter (Organized Section) */}
-        <section id="categories" className="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full scroll-mt-24">
-          <CategoryBar
-            selectedCategory={selectedCategory}
-            onSelectCategory={(cat) => {
-              setSelectedCategory(cat);
-              scrollToSection('products-catalog');
-            }}
-            totalProductsCount={products.length}
-          />
-        </section>
+        <CategoryBar
+          selectedCategory={selectedCategory}
+          onSelectCategory={(cat) => {
+            setSelectedCategory(cat);
+            document.getElementById('products-catalog')?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          totalProductsCount={products.length}
+        />
 
-        {/* Products Grid Section with Motion Transitions & Controls */}
-        <section id="products-catalog" className="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full scroll-mt-24">
-          {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-3 mb-6 pb-3 border-b border-[#222] text-right">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-[#f5f5f7] tracking-tight">
-                {selectedCategory === 'all' ? (
-                  <span>كافة المنتجات المتوفرة</span>
-                ) : (
-                  <span>قسم {currentCategoryInfo?.name}</span>
-                )}
-              </h2>
-              <p className="text-xs text-[#8e8e93] mt-0.5">
-                عرض {filteredProducts.length} منتج • جميع الأسعار رسمية ومفصولة بالدينار العراقي (IQD)
-              </p>
-            </div>
-
-            {/* Controls: Brand Selector & Sorting Dropdown */}
-            <div className="flex flex-wrap items-center gap-2.5">
-              {/* Brand Selector */}
-              <div className="flex items-center gap-1 overflow-x-auto pb-0.5 no-scrollbar text-xs">
-                <span className="text-[#8e8e93] ml-1 shrink-0 text-[11px]">الماركة:</span>
-                {availableBrands.map((brand) => {
-                  const isSel = selectedBrand === brand;
-                  return (
+        {/* شبكة المنتجات */}
+        <section
+          id="products-catalog"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-10 scroll-mt-32"
+        >
+          <SectionHeader
+            eyebrow={currentCategory ? currentCategory.name : 'المتجر'}
+            eyebrowIcon={LayoutGrid}
+            title={selectedCategory === 'all' ? 'كافة المنتجات المتوفرة' : `قسم ${currentCategory?.name}`}
+            description={`عرض ${filteredProducts.length} منتج • جميع الأسعار الرسمية بالدينار العراقي`}
+            className="mb-5"
+            action={
+              <div className="flex flex-wrap items-center gap-2">
+                {/* الماركات */}
+                <div className="flex items-center gap-1 overflow-x-auto mnr-no-scrollbar">
+                  {BRANDS.map((brand) => (
                     <button
                       key={brand}
+                      type="button"
                       onClick={() => setSelectedBrand(brand)}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                        isSel
-                          ? 'bg-[#ffd700] text-[#0a0a0a]'
-                          : 'bg-[#121212] hover:bg-[#1a1a1a] text-[#8e8e93] hover:text-[#f5f5f7] border border-[#2a2a2a]'
+                      className={`px-2.5 h-8 rounded-lg text-[11px] font-bold whitespace-nowrap transition-colors ${
+                        selectedBrand === brand
+                          ? 'bg-brand text-on-brand'
+                          : 'bg-surface-2 text-ink-2 border border-line hover:border-brand/40 hover:text-ink'
                       }`}
                     >
-                      {brand === 'all' ? 'الكل' : brand}
+                      {brand === 'all' ? 'كل الماركات' : brand}
                     </button>
-                  );
-                })}
-              </div>
+                  ))}
+                </div>
 
-              {/* Sort By Dropdown */}
-              <div className="relative">
+                {/* الفرز */}
                 <select
                   value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
-                  className="h-8.5 px-3 pr-7 rounded-lg bg-[#141414] border border-[#333] text-xs font-medium text-[#ffd700] focus:outline-none focus:border-[#ffd700] appearance-none cursor-pointer"
+                  onChange={(e) => setSortBy(e.target.value as SortBy)}
+                  aria-label="ترتيب المنتجات"
+                  className="mnr-field h-8 py-0 text-xs w-auto min-w-[9rem]"
                 >
-                  <option value="featured">الأكثر طلباً</option>
-                  <option value="price-asc">السعر: من الأقل للأعلى</option>
-                  <option value="price-desc">السعر: من الأعلى للأقل</option>
-                  <option value="rating">الأعلى تقييماً</option>
+                  {SORTS.map((sort) => (
+                    <option key={sort.value} value={sort.value}>
+                      {sort.label}
+                    </option>
+                  ))}
                 </select>
-                <ArrowUpDown className="absolute top-2.5 right-2 w-3 h-3 text-[#ffd700] pointer-events-none" />
               </div>
+            }
+          />
+
+          {filteredProducts.length > 0 ? (
+            <div
+              key={`${selectedCategory}-${selectedBrand}-${sortBy}`}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 animate-rise"
+            >
+              {filteredProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  isWishlisted={wishlist.includes(product.id)}
+                  onAddToCart={(p) => addToCart(p, 1)}
+                  onQuickBuy={(p) => quickBuy(p, 1)}
+                  onToggleWishlist={toggleWishlist}
+                  onOpenDetails={setSelectedProduct}
+                />
+              ))}
             </div>
-          </div>
-
-          {/* Animated Products Grid with key for smooth transition */}
-          <div
-            key={`${selectedCategory}-${selectedBrand}-${sortBy}`}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 animate-fade-in-slide"
-          >
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                isWishlisted={wishlist.includes(product.id)}
-                onAddToCart={(p) => handleAddToCart(p, 1)}
-                onQuickBuy={(p) => handleQuickBuy(p, 1)}
-                onToggleWishlist={handleToggleWishlist}
-                onOpenDetails={setSelectedProduct}
-              />
-            ))}
-          </div>
-
-          {filteredProducts.length === 0 && (
-            <div className="py-16 text-center text-sm text-[#99907c] bg-[#121212] rounded-3xl border border-[#d4af37]/20 space-y-3">
-              <p>لا توجد منتجات مطابقة للقسم أو الماركة المحددة حالياً.</p>
-              <button
-                onClick={() => {
-                  setSelectedCategory('all');
-                  setSelectedBrand('all');
-                }}
-                className="px-4 py-2 rounded-xl bg-[#ffd700] text-[#0a0a0a] text-xs font-bold shadow-md hover:brightness-110"
-              >
+          ) : (
+            <div className="py-16 text-center space-y-3 rounded-2xl border border-line bg-surface-2">
+              <PackageSearch className="w-10 h-10 text-ink-3 mx-auto" />
+              <p className="text-sm text-ink-2">لا توجد منتجات مطابقة للقسم أو الماركة المحددة.</p>
+              <button type="button" onClick={resetFilters} className="mnr-btn mnr-btn-soft h-10 text-xs">
+                <RotateCcw className="w-4 h-4" />
                 إعادة ضبط الفلتر وعرض الكل
               </button>
             </div>
           )}
         </section>
 
-        {/* Flash Deals & Offers Banner */}
         <OffersSection
           offers={offers}
           onApplyCategoryFilter={(cat) => {
-            setSelectedCategory(cat as any);
-            scrollToSection('products-catalog');
+            setSelectedCategory(cat as ProductCategory);
+            document.getElementById('products-catalog')?.scrollIntoView({ behavior: 'smooth' });
           }}
         />
 
-        {/* Maintenance & Repair Services Section (Matching uploaded poster) */}
         <MaintenanceSection
-          onContactWhatsApp={() => {
-            window.open('https://wa.me/9647701234567?text=مرحبا، أود الاستفسار عن صيانة هاتفي لدى مركز المنار', '_blank');
-          }}
+          onContactWhatsApp={() =>
+            window.open(
+              'https://wa.me/9647701234567?text=' +
+                encodeURIComponent('مرحبا، أود الاستفسار عن صيانة هاتفي لدى مركز المنار'),
+              '_blank'
+            )
+          }
         />
 
-        {/* About & Contact Section */}
         <AboutContactSection />
       </main>
 
-      {/* 4. Luxury Footer */}
       <Footer
         onOpenAdmin={() => setIsAdminAuthOpen(true)}
         onOpenTracking={() => setIsTrackingOpen(true)}
         onScrollToSection={scrollToSection}
       />
 
-      {/* 5. Mobile Bottom Navigation Bar */}
       <MobileBottomNav
-        cartCount={totalCartItemsCount}
+        cartCount={cartCount}
         onGoHome={() => scrollToSection('hero')}
         onGoCategories={() => scrollToSection('categories')}
         onOpenCart={() => setIsCartOpen(true)}
@@ -390,79 +340,71 @@ export default function App() {
         onOpenAdmin={() => setIsAdminAuthOpen(true)}
       />
 
-      {/* 6. Modals & Drawers */}
-      {/* Product Details Modal */}
+      {/* النوافذ */}
       <ProductModal
         product={selectedProduct}
         isWishlisted={selectedProduct ? wishlist.includes(selectedProduct.id) : false}
         onClose={() => setSelectedProduct(null)}
-        onAddToCart={handleAddToCart}
-        onQuickBuy={handleQuickBuy}
-        onToggleWishlist={handleToggleWishlist}
+        onAddToCart={addToCart}
+        onQuickBuy={quickBuy}
+        onToggleWishlist={toggleWishlist}
       />
 
-      {/* Shopping Cart Drawer */}
       <CartDrawer
         isOpen={isCartOpen}
         cart={cart}
-        deliveryFee={settings.fixedDeliveryFee || 5000}
+        deliveryFee={deliveryFee}
         onClose={() => setIsCartOpen(false)}
-        onUpdateQuantity={handleUpdateCartQuantity}
-        onRemoveItem={handleRemoveFromCart}
-        onClearCart={handleClearCart}
+        onUpdateQuantity={storeStorage.updateCartQuantity}
+        onRemoveItem={storeStorage.removeFromCart}
+        onClearCart={storeStorage.clearCart}
         onProceedToCheckout={() => {
           setIsCartOpen(false);
           setIsCheckoutOpen(true);
         }}
       />
 
-      {/* Wishlist Drawer */}
       <WishlistDrawer
         isOpen={isWishlistOpen}
         wishlistIds={wishlist}
         allProducts={products}
         onClose={() => setIsWishlistOpen(false)}
-        onRemoveFromWishlist={handleToggleWishlist}
-        onAddToCart={(p) => handleAddToCart(p, 1)}
+        onRemoveFromWishlist={toggleWishlist}
+        onAddToCart={(p) => addToCart(p, 1)}
       />
 
-      {/* Real-time Search Modal */}
       <SearchModal
         isOpen={isSearchOpen}
         products={products}
         onClose={() => setIsSearchOpen(false)}
         onSelectProduct={setSelectedProduct}
-        onAddToCart={(p) => handleAddToCart(p, 1)}
+        onAddToCart={(p) => addToCart(p, 1)}
       />
 
-      {/* 2-Step Checkout & Order Review Modal */}
       <CheckoutModal
         isOpen={isCheckoutOpen}
         cart={cart}
-        deliveryFee={settings.fixedDeliveryFee || 5000}
+        deliveryFee={deliveryFee}
         onClose={() => setIsCheckoutOpen(false)}
-        onSubmitOrder={handleOrderSubmitted}
+        onSubmitOrder={submitOrder}
       />
 
-      {/* Order Success Confirmation Modal */}
       <OrderSuccessModal
         order={successOrder}
         onClose={() => setSuccessOrder(null)}
-        onTrackOrder={(orderNumber, phone) => {
+        onTrackOrder={() => {
           setSuccessOrder(null);
           setIsTrackingOpen(true);
         }}
       />
 
-      {/* Order Tracking Modal */}
       <OrderTrackingModal
         isOpen={isTrackingOpen}
-        initialOrderNumber={successOrder?.orderNumber || 'MNR-20260929-001'}
-        initialPhone={successOrder?.phone || '07801234567'}
+        initialOrderNumber={successOrder?.orderNumber}
+        initialPhone={successOrder?.phone}
         onClose={() => setIsTrackingOpen(false)}
       />
 
-      {/* Admin 4-Digit PIN Security Keypad */}
       <AdminAuthModal
         isOpen={isAdminAuthOpen}
         correctPin={settings.adminPin || '1234'}
@@ -473,7 +415,6 @@ export default function App() {
         onClose={() => setIsAdminAuthOpen(false)}
       />
 
-      {/* Full Admin Management Suite Dashboard */}
       <AdminDashboard
         isOpen={isAdminDashboardOpen}
         onClose={() => setIsAdminDashboardOpen(false)}
