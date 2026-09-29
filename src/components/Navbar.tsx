@@ -1,12 +1,34 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Logo } from './Logo';
-import { Search, ShoppingBag, Heart, Shield, Sparkles } from 'lucide-react';
+import {
+  Search,
+  ShoppingBag,
+  Heart,
+  Shield,
+  Package,
+  Truck,
+  Wrench,
+  Flame,
+  Smartphone,
+  Headphones,
+  Zap,
+  BatteryCharging,
+  Cable,
+  Watch,
+  Home,
+  Sun,
+  Moon,
+  MapPin,
+  ChevronLeft,
+} from 'lucide-react';
 import { ProductCategory } from '../types/store';
 
 interface NavbarProps {
   cartCount: number;
   wishlistCount: number;
   activeCategory: ProductCategory | 'all';
+  theme: 'light' | 'dark';
+  onToggleTheme: () => void;
   onSelectCategory: (category: ProductCategory | 'all') => void;
   onOpenCart: () => void;
   onOpenWishlist: () => void;
@@ -16,10 +38,30 @@ interface NavbarProps {
   onScrollToSection: (sectionId: string) => void;
 }
 
+const NAV_ITEMS: {
+  label: string;
+  icon: React.ElementType;
+  category?: ProductCategory | 'all';
+  section?: string;
+  accent?: boolean;
+}[] = [
+  { label: 'الرئيسية', icon: Home, section: 'hero' },
+  { label: 'الهواتف', icon: Smartphone, category: 'phones' },
+  { label: 'السماعات', icon: Headphones, category: 'audio' },
+  { label: 'الشواحن', icon: Zap, category: 'chargers' },
+  { label: 'البطاريات', icon: BatteryCharging, category: 'powerbanks' },
+  { label: 'الكيبلات', icon: Cable, category: 'cables' },
+  { label: 'الساعات', icon: Watch, category: 'watches' },
+  { label: 'الصيانة', icon: Wrench, section: 'maintenance' },
+  { label: 'العروض', icon: Flame, section: 'offers', accent: true },
+];
+
 export const Navbar: React.FC<NavbarProps> = ({
   cartCount,
   wishlistCount,
   activeCategory,
+  theme,
+  onToggleTheme,
   onOpenCart,
   onOpenWishlist,
   onOpenSearch,
@@ -34,179 +76,223 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 20);
+      const current = window.scrollY;
+      setIsScrolled(current > 12);
 
-      // Smooth auto-hide on scroll down, reappear on scroll up
-      if (currentScrollY > 90) {
-        if (currentScrollY > lastScrollY.current + 6) {
-          setIsVisible(false);
-        } else if (currentScrollY < lastScrollY.current - 6) {
-          setIsVisible(true);
-        }
+      // إخفاء ذكي عند النزول، ظهور فوري عند الصعود
+      if (current > 140) {
+        if (current > lastScrollY.current + 6) setIsVisible(false);
+        else if (current < lastScrollY.current - 6) setIsVisible(true);
       } else {
         setIsVisible(true);
       }
-      lastScrollY.current = currentScrollY;
+      lastScrollY.current = current;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavCategoryClick = (cat: ProductCategory | 'all') => {
-    onSelectCategory(cat);
-    onScrollToSection('products-catalog');
+  const go = (item: (typeof NAV_ITEMS)[number]) => {
+    if (item.category !== undefined) onSelectCategory(item.category);
+    if (item.section) onScrollToSection(item.section);
   };
+
+  const isActive = (item: (typeof NAV_ITEMS)[number]) =>
+    item.category !== undefined && item.category === activeCategory;
+
+  const iconBtn =
+    'relative w-10 h-10 grid place-items-center rounded-xl text-ink-2 hover:text-brand-ink hover:bg-brand-soft transition-colors';
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-40 w-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-        isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-      } ${
-        isScrolled
-          ? 'bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-[#ffd700]/25 shadow-[0_4px_30px_rgba(0,0,0,0.85)]'
-          : 'bg-[#0a0a0a]/80 backdrop-blur-md border-b border-[#1c1c1c]'
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      {/* Top Reassurance Ticker Bar (Desktop) */}
-      <div className="hidden lg:block bg-[#121008] border-b border-[#ffd700]/15 py-1 px-4 text-center text-xs text-[#ffd700]">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#30d158] animate-pulse" />
-            <span className="text-[#e5e2e1] font-medium">أجهزة أصلية 100% مختومة بكفالة الوكالة 12 شهراً</span>
+      {/* شريط الثقة العلوي */}
+      <div
+        className={`hidden lg:block overflow-hidden transition-all duration-300 ${
+          isScrolled ? 'max-h-0 opacity-0' : 'max-h-12 opacity-100'
+        }`}
+      >
+        <div className="mnr-glass border-b border-line">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8 h-10 flex items-center justify-between gap-4 text-[11px]">
+            <span className="flex items-center gap-2 text-ink-2 font-medium">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-success animate-ping opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+              </span>
+              أجهزة أصلية 100% مختومة بكفالة الوكالة 12 شهراً
+            </span>
+
+            <span className="flex items-center gap-2 text-ink-2 font-medium">
+              <Truck className="w-3.5 h-3.5 text-brand-ink" />
+              توصيل 5,000 د.ع ثابت لكل المحافظات
+            </span>
+
+            <button
+              type="button"
+              onClick={onOpenTracking}
+              className="flex items-center gap-1.5 font-bold text-brand-ink hover:gap-2.5 transition-all"
+            >
+              <Package className="w-3.5 h-3.5" />
+              تتبع شحنتك
+            </button>
           </div>
-          <div className="flex items-center gap-2 font-semibold">
-            <span>توصيل 5,000 د.ع ثابت لكافة محافظات العراق</span>
-            <span>•</span>
-            <span className="text-[#30d158]">الدفع نقداً (كاش) عند الاستلام والمعاينة</span>
-          </div>
-          <button
-            onClick={onOpenTracking}
-            className="text-xs text-[#ffd700] hover:underline font-bold flex items-center gap-1 cursor-pointer"
-          >
-            <span>تتبع شحنتك المباشر</span>
-            <span>←</span>
-          </button>
         </div>
       </div>
 
-      {/* Main Nav Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 sm:h-16">
-          {/* Official Brand Logo */}
-          <Logo size="sm" onClick={() => onScrollToSection('hero')} />
+      {/* الشريط الرئيسي */}
+      <div
+        className={`transition-all duration-300 ${
+          isScrolled
+            ? 'mnr-glass border-b border-line shadow-soft'
+            : 'mnr-glass border-b border-transparent'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-4 h-16 lg:h-[72px]">
+            {/* العلامة */}
+            <div className="shrink-0">
+              <Logo size="sm" onClick={() => onScrollToSection('hero')} />
+            </div>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-5 text-xs sm:text-sm">
-            <button
-              onClick={() => onScrollToSection('hero')}
-              className="text-[#a1a1a6] hover:text-[#ffd700] transition-colors cursor-pointer"
-            >
-              الرئيسية
-            </button>
-            <button
-              onClick={() => handleNavCategoryClick('phones')}
-              className={`transition-colors cursor-pointer font-medium ${
-                activeCategory === 'phones' ? 'text-[#ffd700] font-bold' : 'text-[#a1a1a6] hover:text-[#ffd700]'
-              }`}
-            >
-              📱 الهواتف
-            </button>
-            <button
-              onClick={() => handleNavCategoryClick('chargers')}
-              className={`transition-colors cursor-pointer font-medium ${
-                activeCategory === 'chargers' ? 'text-[#ffd700] font-bold' : 'text-[#a1a1a6] hover:text-[#ffd700]'
-              }`}
-            >
-              🔌 الشواحن
-            </button>
-            <button
-              onClick={() => handleNavCategoryClick('audio')}
-              className={`transition-colors cursor-pointer font-medium ${
-                activeCategory === 'audio' ? 'text-[#ffd700] font-bold' : 'text-[#a1a1a6] hover:text-[#ffd700]'
-              }`}
-            >
-              🎧 السماعات
-            </button>
-            <button
-              onClick={() => handleNavCategoryClick('powerbanks')}
-              className={`transition-colors cursor-pointer font-medium ${
-                activeCategory === 'powerbanks' ? 'text-[#ffd700] font-bold' : 'text-[#a1a1a6] hover:text-[#ffd700]'
-              }`}
-            >
-              🔋 البطاريات
-            </button>
-            <button
-              onClick={() => handleNavCategoryClick('cases')}
-              className={`transition-colors cursor-pointer font-medium ${
-                activeCategory === 'cases' ? 'text-[#ffd700] font-bold' : 'text-[#a1a1a6] hover:text-[#ffd700]'
-              }`}
-            >
-              🛡️ الإكسسوارات
-            </button>
-            <button
-              onClick={() => onScrollToSection('offers')}
-              className="text-[#ffd700] hover:text-white font-bold transition-colors cursor-pointer"
-            >
-              العروض 🔥
-            </button>
-            <button
-              onClick={() => onScrollToSection('maintenance')}
-              className="text-[#a1a1a6] hover:text-[#ffd700] transition-colors cursor-pointer"
-            >
-              الصيانة
-            </button>
-          </nav>
+            {/* روابط التنقّل */}
+            <nav className="hidden xl:flex items-center gap-0.5">
+              {NAV_ITEMS.map((item) => {
+                const Icon = item.icon;
+                const active = isActive(item);
+                return (
+                  <button
+                    key={item.label}
+                    type="button"
+                    onClick={() => go(item)}
+                    className={`relative px-3 h-10 grid place-items-center rounded-xl text-[13px] font-bold transition-colors ${
+                      active || item.accent
+                        ? item.accent && !active
+                          ? 'text-gold hover:bg-gold-soft'
+                          : 'text-brand-ink bg-brand-soft'
+                        : 'text-ink-2 hover:text-ink hover:bg-surface-2'
+                    }`}
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <Icon className="w-4 h-4" />
+                      {item.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </nav>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2">
-            {/* Search */}
-            <button
-              onClick={onOpenSearch}
-              className="w-9 h-9 rounded-xl bg-[#141414] hover:bg-[#1f1f1f] text-[#d0c5af] hover:text-[#ffd700] border border-[#2a2a2a] flex items-center justify-center transition-colors cursor-pointer"
-              title="بحث عن منتج أو ماركة"
-            >
-              <Search className="w-4 h-4" />
-            </button>
+            {/* الأدوات */}
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button type="button" onClick={onOpenSearch} className={iconBtn} aria-label="بحث">
+                <Search className="w-[18px] h-[18px]" />
+              </button>
 
-            {/* Wishlist */}
-            <button
-              onClick={onOpenWishlist}
-              className="relative w-9 h-9 rounded-xl bg-[#141414] hover:bg-[#1f1f1f] text-[#d0c5af] hover:text-[#ffd700] border border-[#2a2a2a] flex items-center justify-center transition-colors cursor-pointer"
-              title="المفضلة"
-            >
-              <Heart className="w-4 h-4" />
-              {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#e11d48] text-white text-[10px] font-bold flex items-center justify-center">
-                  {wishlistCount}
-                </span>
-              )}
-            </button>
+              <button
+                type="button"
+                onClick={onToggleTheme}
+                className={iconBtn}
+                aria-label={theme === 'dark' ? 'تفعيل الوضع الفاتح' : 'تفعيل الوضع الداكن'}
+                title={theme === 'dark' ? 'الوضع الفاتح' : 'الوضع الداكن'}
+              >
+                {theme === 'dark' ? <Sun className="w-[18px] h-[18px]" /> : <Moon className="w-[18px] h-[18px]" />}
+              </button>
 
-            {/* Cart Button */}
-            <button
-              onClick={onOpenCart}
-              className="flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-[#ffd700] hover:bg-[#e6c200] text-[#0a0a0a] font-extrabold text-xs shadow-md transition-all active:scale-95 cursor-pointer"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span>السلة</span>
-              {cartCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-[#0a0a0a] text-[#ffd700] text-[10px] font-black flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </button>
+              <button
+                type="button"
+                onClick={onOpenWishlist}
+                className={`${iconBtn} hidden sm:grid`}
+                aria-label="المفضلة"
+              >
+                <Heart className="w-[18px] h-[18px]" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-0.5 -left-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-danger text-white text-[10px] font-extrabold grid place-items-center ring-2 ring-canvas">
+                    {wishlistCount}
+                  </span>
+                )}
+              </button>
 
-            {/* Admin Shield (Desktop) */}
-            <button
-              onClick={onOpenAdmin}
-              className="hidden sm:flex w-9 h-9 rounded-xl bg-[#141414] hover:bg-[#1f1f1f] text-[#8e8e93] hover:text-[#ffd700] border border-[#2a2a2a] items-center justify-center transition-colors cursor-pointer"
-              title="لوحة الإدارة"
-            >
-              <Shield className="w-4 h-4" />
-            </button>
+              <button
+                type="button"
+                onClick={onOpenCart}
+                className="mnr-btn mnr-btn-primary h-10 px-3.5 sm:px-4 relative"
+                aria-label="سلة المشتريات"
+              >
+                <ShoppingBag className="w-[18px] h-[18px]" />
+                <span className="hidden sm:inline">السلة</span>
+                {cartCount > 0 && (
+                  <span className="min-w-[20px] h-5 px-1 rounded-full bg-on-brand/25 text-on-brand text-[11px] font-extrabold grid place-items-center">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={onOpenAdmin}
+                className={`${iconBtn} hidden md:grid`}
+                aria-label="لوحة الإدارة"
+                title="لوحة الإدارة"
+              >
+                <Shield className="w-[18px] h-[18px]" />
+              </button>
+            </div>
           </div>
+        </div>
+      </div>
+
+      {/* روابط الأقسام على الشاشات المتوسطة (بدل xl) */}
+      <div
+        className={`xl:hidden overflow-x-auto mnr-no-scrollbar border-b transition-all duration-300 ${
+          isScrolled ? 'border-line' : 'border-transparent'
+        } ${isVisible ? '' : 'opacity-0'}`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center gap-1 py-2 min-w-max">
+          <button
+            type="button"
+            onClick={onOpenTracking}
+            className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-[12px] font-bold text-brand-ink bg-brand-soft"
+          >
+            <MapPin className="w-3.5 h-3.5" />
+            تتبع الطلب
+          </button>
+          {NAV_ITEMS.filter((i) => i.category).map((item) => {
+            const Icon = item.icon;
+            const active = isActive(item);
+            return (
+              <button
+                key={item.label}
+                type="button"
+                onClick={() => go(item)}
+                className={`flex items-center gap-1.5 h-8 px-3 rounded-lg text-[12px] font-bold transition-colors ${
+                  active ? 'bg-brand-soft text-brand-ink' : 'text-ink-2 hover:bg-surface-2'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {item.label}
+              </button>
+            );
+          })}
+          <button
+            type="button"
+            onClick={() => onScrollToSection('maintenance')}
+            className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-[12px] font-bold text-ink-2 hover:bg-surface-2"
+          >
+            <Wrench className="w-3.5 h-3.5" />
+            الصيانة
+          </button>
+          <button
+            type="button"
+            onClick={() => onScrollToSection('offers')}
+            className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-[12px] font-bold text-gold hover:bg-gold-soft"
+          >
+            <Flame className="w-3.5 h-3.5" />
+            العروض
+            <ChevronLeft className="w-3 h-3" />
+          </button>
         </div>
       </div>
     </header>
