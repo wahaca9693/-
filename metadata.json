@@ -1,0 +1,6 @@
+{
+  "name": "M.N.R – مركز المنار للموبايل",
+  "description": "متجر M.N.R الرسمي لبيع أحدث الهواتف الذكية الأصلية، السماعات، الشواحن، البطاريات، والإكسسوارات الفاخرة مع خدمة التوصيل لكافة محافظات العراق بـ 5,000 د.ع وضمان ذهبي معتمد.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
