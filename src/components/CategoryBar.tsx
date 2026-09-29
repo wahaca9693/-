@@ -1,7 +1,19 @@
 import React from 'react';
 import { ProductCategory } from '../types/store';
 import { CATEGORIES_LIST } from '../data/initialData';
-import { Smartphone, Headphones, Zap, BatteryCharging, Cable, Shield, Watch, Wrench, ArrowUpLeft } from 'lucide-react';
+import { 
+  Smartphone, 
+  Headphones, 
+  Zap, 
+  BatteryCharging, 
+  Cable, 
+  Shield, 
+  Watch, 
+  Wrench, 
+  Sparkles,
+  ArrowLeft,
+  Check
+} from 'lucide-react';
 
 interface CategoryBarProps {
   selectedCategory: ProductCategory | 'all';
@@ -9,79 +21,16 @@ interface CategoryBarProps {
   totalProductsCount: number;
 }
 
-const CATEGORY_ITEMS: {
-  id: ProductCategory;
-  name: string;
-  desc: string;
-  icon: React.ElementType;
-  count: number;
-  gradient: string;
-}[] = [
-  {
-    id: 'phones',
-    name: 'الهواتف الذكية',
-    desc: 'أحدث هواتف Apple و Samsung الأصلية',
-    icon: Smartphone,
-    count: 18,
-    gradient: 'from-[#1e190e] to-[#0f0e0a]',
-  },
-  {
-    id: 'audio',
-    name: 'السماعات والصوتيات',
-    desc: 'عزل ضجيج وصوت نقي فائق الجودة',
-    icon: Headphones,
-    count: 14,
-    gradient: 'from-[#181611] to-[#0e0d0b]',
-  },
-  {
-    id: 'chargers',
-    name: 'الشواحن السريعة GaN',
-    desc: 'شواحن ذكية 65W و 100W متعددة المنافذ',
-    icon: Zap,
-    count: 22,
-    gradient: 'from-[#1a170f] to-[#0d0c0a]',
-  },
-  {
-    id: 'powerbanks',
-    name: 'البطاريات المتنقلة',
-    desc: 'MagSafe وشحن لاسلكي فائق السعة',
-    icon: BatteryCharging,
-    count: 12,
-    gradient: 'from-[#171510] to-[#0d0c09]',
-  },
-  {
-    id: 'cases',
-    name: 'الكفرات وحمايات الشاشة',
-    desc: 'جلد طبيعي، حماية 9H، وكفرات MagSafe',
-    icon: Shield,
-    count: 25,
-    gradient: 'from-[#1a1710] to-[#0e0d0a]',
-  },
-  {
-    id: 'watches',
-    name: 'الساعات الذكية',
-    desc: 'ساعات رياضية وصحية بهياكل تيتانيوم',
-    icon: Watch,
-    count: 9,
-    gradient: 'from-[#16140e] to-[#0c0b08]',
-  },
-  {
-    id: 'cables',
-    name: 'الكيبلات والوصلات',
-    desc: 'كيبلات مضفرة مدرعة تتحمل أقصى استهلاك',
-    icon: Cable,
-    count: 16,
-    gradient: 'from-[#17150f] to-[#0c0b09]',
-  },
-  {
-    id: 'accessories',
-    name: 'معدات وأدوات الصيانة',
-    desc: 'محطات حرارية وطقوم مفكات دقيقة للفنيين',
-    icon: Wrench,
-    count: 15,
-    gradient: 'from-[#191610] to-[#0d0c09]',
-  },
-];
+const CATEGORY_ICON_MAP: Record<string, React.ElementType> = {
+  phones: Smartphone,
+  chargers: Zap,
+  powerbanks: BatteryCharging,
+  audio: Headphones,
+  cases: Shield,
+  watches: Watch,
+  cables: Cable,
+  accessories: Wrench,
+};
 
 export const CategoryBar: React.FC<CategoryBarProps> = ({
   selectedCategory,
@@ -89,80 +38,118 @@ export const CategoryBar: React.FC<CategoryBarProps> = ({
   totalProductsCount,
 }) => {
   return (
-    <div className="w-full space-y-6 text-right">
-      {/* Section Header with Refined Typography */}
-      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-3 border-b border-[#222]">
+    <div className="w-full text-right space-y-5">
+      {/* Section Header */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pb-3 border-b border-[#222]">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#f5f5f7] tracking-tight">
-            أقسام المتجر الرئيسية
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ffd700]/10 border border-[#ffd700]/30 text-[#ffd700] text-xs font-bold mb-1.5">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>الأقسام الرئيسية للمتجر</span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-black text-[#f5f5f7] tracking-tight">
+            تصفح حسب قسم المنتجات
           </h2>
-          <p className="text-xs text-[#8e8e93] mt-0.5">
-            تصفح التشكيلة بحسب الفئة مع كامل تفاصيل المواصفات والأسعار
+          <p className="text-xs sm:text-sm text-[#8e8e93] mt-1">
+            اختر القسم للاطلاع على أحدث الأجهزة الأصلية المتوفرة حالياً بالضمان
           </p>
         </div>
 
-        {selectedCategory !== 'all' ? (
-          <button
-            onClick={() => onSelectCategory('all')}
-            className="text-xs text-[#ffd700] hover:underline font-medium self-start sm:self-auto"
-          >
-            عرض كافة الأقسام (الكل) ←
-          </button>
-        ) : (
-          <span className="text-xs text-[#8e8e93]">
-            {totalProductsCount} منتج متوفر
-          </span>
-        )}
+        {/* View All Button */}
+        <button
+          onClick={() => onSelectCategory('all')}
+          className={`h-10 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer ${
+            selectedCategory === 'all'
+              ? 'bg-[#ffd700] text-[#0a0a0a] shadow-[0_2px_12px_rgba(255,215,0,0.3)]'
+              : 'bg-[#151515] hover:bg-[#1f1f1f] text-[#d4af37] border border-[#333]'
+          }`}
+        >
+          <span>عرض كل المنتجات ({totalProductsCount})</span>
+          <ArrowLeft className="w-4 h-4" />
+        </button>
       </div>
 
-      {/* Spacious 4-Column Modern Category Grid (2 on mobile) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-        {CATEGORY_ITEMS.map((cat) => {
-          const Icon = cat.icon;
+      {/* Grid of Large, Organized Category Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4.5">
+        {CATEGORIES_LIST.map((cat) => {
           const isSelected = selectedCategory === cat.id;
+          const Icon = CATEGORY_ICON_MAP[cat.id] || Sparkles;
 
           return (
-            <button
+            <div
               key={cat.id}
               onClick={() => onSelectCategory(cat.id)}
-              className={`group text-right p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden flex flex-col justify-between min-h-[125px] sm:min-h-[140px] cursor-pointer ${
+              className={`relative rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 cursor-pointer overflow-hidden text-right select-none group ${
                 isSelected
-                  ? 'bg-gradient-to-br from-[#241d0e] to-[#121008] border-[#ffd700] shadow-[0_8px_25px_rgba(212,175,55,0.2)]'
-                  : 'bg-gradient-to-br ' + cat.gradient + ' border-[#26241e] hover:border-[#d4af37]/60 hover:shadow-lg'
+                  ? 'bg-gradient-to-b from-[#241f10] to-[#141209] border-2 border-[#ffd700] shadow-[0_4px_25px_rgba(212,175,55,0.25)] scale-[1.02]'
+                  : 'bg-[#111111] hover:bg-[#161616] border border-[#262626] hover:border-[#ffd700]/50 shadow-md hover:shadow-xl'
               }`}
             >
-              {/* Header Icon & Count */}
-              <div className="flex items-center justify-between w-full mb-3">
+              {/* Background ambient subtle image preview */}
+              <div className="absolute -bottom-8 -left-8 w-28 h-28 opacity-15 pointer-events-none transition-transform duration-500 group-hover:scale-125">
+                <img
+                  src={cat.image}
+                  alt={cat.name}
+                  className="w-full h-full object-cover rounded-full filter blur-[1px]"
+                />
+              </div>
+
+              {/* Top Row: Icon + Badge */}
+              <div className="flex items-center justify-between mb-3 z-10">
                 <div
-                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center transition-all ${
+                  className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors ${
                     isSelected
-                      ? 'bg-[#ffd700] text-[#0a0a0a]'
-                      : 'bg-[#181818] text-[#ffd700] border border-[#d4af37]/20 group-hover:bg-[#d4af37]/15 group-hover:border-[#ffd700]/40'
+                      ? 'bg-[#ffd700] text-[#0a0a0a] shadow-md'
+                      : 'bg-[#1a1a1a] text-[#ffd700] group-hover:bg-[#ffd700]/20'
                   }`}
                 >
-                  <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <Icon className="w-5 h-5" />
                 </div>
 
-                <div className="flex items-center gap-1 text-[11px] text-[#8e8e93] group-hover:text-[#ffd700] transition-colors">
-                  <span>{cat.count} منتج</span>
-                  <ArrowUpLeft className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-                </div>
+                <span
+                  className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
+                    isSelected
+                      ? 'bg-[#ffd700]/30 text-[#ffd700]'
+                      : 'bg-[#1e1e1e] text-[#a1a1a6] group-hover:text-[#ffd700]'
+                  }`}
+                >
+                  {cat.badge}
+                </span>
               </div>
 
-              {/* Title & Description */}
-              <div className="space-y-1">
-                <h3
-                  className={`text-sm sm:text-base font-bold transition-colors ${
-                    isSelected ? 'text-[#ffd700]' : 'text-[#f5f5f7] group-hover:text-[#ffd700]'
-                  }`}
-                >
-                  {cat.name}
-                </h3>
-                <p className="text-[11px] text-[#8e8e93] line-clamp-1">
-                  {cat.desc}
+              {/* Content */}
+              <div className="z-10 mt-1">
+                <div className="flex items-center justify-between">
+                  <h3
+                    className={`text-sm sm:text-base font-bold transition-colors ${
+                      isSelected ? 'text-[#ffd700]' : 'text-[#f5f5f7] group-hover:text-[#ffd700]'
+                    }`}
+                  >
+                    {cat.name}
+                  </h3>
+                  {isSelected && (
+                    <span className="w-5 h-5 rounded-full bg-[#ffd700] text-[#0a0a0a] flex items-center justify-center">
+                      <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    </span>
+                  )}
+                </div>
+
+                <p className="text-[11px] text-[#8e8e93] line-clamp-1 mt-1 group-hover:text-[#b0b0b5] transition-colors">
+                  {cat.subtitle}
                 </p>
+
+                <div className="mt-3 pt-2.5 border-t border-[#222] flex items-center justify-between text-[11px]">
+                  <span className="text-[#a1a1a6]">{cat.count} منتج متوفر</span>
+                  <span
+                    className={`font-bold transition-colors flex items-center gap-1 ${
+                      isSelected ? 'text-[#ffd700]' : 'text-[#636366] group-hover:text-[#ffd700]'
+                    }`}
+                  >
+                    <span>استعراض</span>
+                    <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-1" />
+                  </span>
+                </div>
               </div>
-            </button>
+            </div>
           );
         })}
       </div>

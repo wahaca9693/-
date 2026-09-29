@@ -1,116 +1,187 @@
 import React from 'react';
-import { Logo } from './Logo';
-import { ShieldCheck, Truck, ArrowLeft, Star, Sparkles } from 'lucide-react';
+import { Truck, ShieldCheck, ArrowLeft, Banknote, Sparkles, Smartphone, Zap } from 'lucide-react';
+import phonesHeroImg from '../assets/images/phones_hero_showcase_1790717437900.jpg';
+import chargersHeroImg from '../assets/images/chargers_hero_showcase_1790717448264.jpg';
 
 interface HeroProps {
   onShopNow: () => void;
   onExploreProducts: () => void;
   onOpenTracking: () => void;
+  onSelectCategory?: (category: any) => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({
-  onShopNow,
-  onExploreProducts,
+export const Hero: React.FC<HeroProps> = ({ 
+  onShopNow, 
   onOpenTracking,
+  onSelectCategory 
 }) => {
   return (
-    <section id="hero" className="relative overflow-hidden pt-4 pb-10 sm:pt-6 sm:pb-16 text-right">
-      {/* Subtle Ambient Studio Glow */}
-      <div className="absolute top-1/4 right-1/3 w-96 h-96 bg-[radial-gradient(circle,rgba(212,175,55,0.08)_0%,transparent_70%)] blur-[90px] pointer-events-none -z-10" />
+    <section id="hero" className="relative px-3 sm:px-6 lg:px-8 pt-2 pb-6 text-right">
+      <div className="max-w-7xl mx-auto space-y-4">
+        {/* Main Hero Banner */}
+        <div className="relative rounded-3xl bg-gradient-to-r from-[#17140e] via-[#100f0b] to-[#080808] border border-[#2d281c] p-5 sm:p-8 md:p-10 overflow-hidden shadow-2xl">
+          {/* Subtle Golden Glow Accent */}
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#ffd700]/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-10 w-64 h-64 bg-[#d4af37]/5 rounded-full blur-2xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          
-          {/* Main Info Column (Span 7) */}
-          <div className="lg:col-span-7 flex flex-col items-start space-y-4 sm:space-y-5">
-            {/* Top Verification Tag */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-[#14120c] border border-[#d4af37]/30 text-xs text-[#ffd700]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#30d158] animate-pulse" />
-              <span className="font-medium">الوكيل المعتمد والضمان الذهبي الرسمي في العراق</span>
-            </div>
+          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+            {/* Info Side */}
+            <div className="space-y-4 max-w-2xl">
+              {/* Trust Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ffd700]/15 border border-[#ffd700]/30 text-[#ffd700] text-xs font-bold">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>الوكيل الرسمي المعتمد • كفالة 12 شهراً مع استبدال فوري</span>
+              </div>
 
-            {/* Typography with Balanced, Modern Proportion */}
-            <div className="space-y-2">
-              <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-bold text-[#f5f5f7] leading-[1.3] tracking-tight">
-                كل ما تحتاجه لعالم{' '}
-                <span className="gold-gradient-text">الموبايل</span>{' '}
-                في مكان واحد
+              {/* Headline */}
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-[#f5f5f7] tracking-tight leading-tight">
+                كل ما تحتاجه لعالم <span className="gold-gradient-text">الموبايل الذكي</span> في مكان واحد
               </h1>
 
-              <p className="text-sm sm:text-base text-[#a1a1a6] leading-relaxed max-w-xl font-normal pt-1">
-                هواتف أصلية مختومة، سماعات، شواحن وإكسسوارات مختارة بعناية وبأسعار مميزة مع خدمة التوصيل المباشر لكافة محافظات العراق.
+              {/* Subheading */}
+              <p className="text-sm sm:text-base text-[#a1a1a6] leading-relaxed">
+                أحدث هواتف آبل وسامسونج، شواحن GaN فائقة السرعة، سماعات أصلية وكافة ملحقات الموبايل بأفضل الأسعار الرسمية بالدينار العراقي.
               </p>
-            </div>
 
-            {/* Structured Trust Points */}
-            <div className="grid grid-cols-2 gap-3 w-full max-w-lg pt-1">
-              <div className="p-3 rounded-xl bg-[#0f0f0f] border border-[#d4af37]/20 flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#1c180e] border border-[#d4af37]/30 flex items-center justify-center text-[#ffd700] shrink-0">
-                  <Truck className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="text-xs font-bold text-[#f5f5f7] block">توصيل 5,000 د.ع</span>
-                  <span className="text-[11px] text-[#8e8e93]">ثابت لكافة المحافظات</span>
-                </div>
-              </div>
-
-              <div className="p-3 rounded-xl bg-[#0f0f0f] border border-[#d4af37]/20 flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#1c180e] border border-[#d4af37]/30 flex items-center justify-center text-[#ffd700] shrink-0">
-                  <ShieldCheck className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="text-xs font-bold text-[#f5f5f7] block">ضمان رسمي 12 شهر</span>
-                  <span className="text-[11px] text-[#8e8e93]">معاينة وفحص قبل الدفع</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex items-center gap-3 pt-2 w-full sm:w-auto">
-              <button
-                onClick={onShopNow}
-                className="h-11 px-7 rounded-xl bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] font-bold text-sm flex items-center justify-center gap-2 shadow-[0_4px_16px_rgba(212,175,55,0.3)] hover:brightness-105 active:scale-95 transition-all cursor-pointer"
-              >
-                <span>تسوق الآن</span>
-                <ArrowLeft className="w-4 h-4" />
-              </button>
-
-              <button
-                onClick={onExploreProducts}
-                className="h-11 px-6 rounded-xl bg-[#141414] hover:bg-[#1a160d] border border-[#d4af37]/30 text-[#e5e2e1] hover:text-[#ffd700] font-semibold text-sm transition-all active:scale-95 cursor-pointer"
-              >
-                استكشف الأقسام
-              </button>
-            </div>
-          </div>
-
-          {/* Right Product Spotlight Showcase (Span 5) */}
-          <div className="lg:col-span-5">
-            <div className="rounded-2xl bg-[#0e0e0e] border border-[#d4af37]/25 p-4 sm:p-5 shadow-xl relative overflow-hidden group">
-              <div className="relative w-full h-56 sm:h-72 rounded-xl overflow-hidden bg-[#070707] flex items-center justify-center border border-[#d4af37]/15">
-                <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTuxKn7zDiW949R7yC1ROc3aot8GuFUou759KVP_5DAje-j_RyRIfqVE69hM6HkA6e2Rww9dhPIGva7TQOKwwljA9YEEFCyR-y7Pm9Pb0OskC4wYxQZyZsYuuI_8A2M_Sdjwc6p8uho8lYyrq5zvHldKNRlQF0G9mTgrlANMy4LDOq2hbs9h7xY2oveUcq7IW30EGVWF50kfTSs4rqQCoR66JWXul1B8mN6RjCyEL0zkjAgtqqY3BC"
-                  alt="M.N.R Flagship Phones"
-                  className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-75" />
-
-                <div className="absolute bottom-3 right-3 left-3 flex items-center justify-between p-2.5 rounded-lg bg-[#0e0e0e]/90 backdrop-blur-md border border-[#d4af37]/20 text-xs">
-                  <div>
-                    <span className="font-bold text-[#ffd700] block">iPhone 17 Pro Max & S26 Ultra</span>
-                    <span className="text-[11px] text-[#8e8e93]">أصلي رسمي مختوم من الوكالة</span>
+              {/* Reassuring Cash on Delivery & Delivery Callouts */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                <div className="flex items-center gap-2.5 p-3 rounded-xl bg-[#141414] border border-[#30d158]/30 text-xs text-[#f5f5f7]">
+                  <div className="w-7 h-7 rounded-lg bg-[#30d158]/15 text-[#30d158] flex items-center justify-center shrink-0">
+                    <Banknote className="w-4 h-4" />
                   </div>
-                  <button
-                    onClick={onShopNow}
-                    className="px-3 py-1 rounded bg-[#d4af37] text-[#0a0a0a] font-bold text-xs hover:brightness-105 transition-colors"
-                  >
-                    عرض الأجهزة
-                  </button>
+                  <div>
+                    <span className="font-bold text-[#30d158] block">الدفع نقداً (كاش) عند الاستلام</span>
+                    <span className="text-[11px] text-[#8e8e93]">عاين الطلب وافحصه قبل دفع أي دينار</span>
+                  </div>
                 </div>
+
+                <div className="flex items-center gap-2.5 p-3 rounded-xl bg-[#141414] border border-[#ffd700]/30 text-xs text-[#f5f5f7]">
+                  <div className="w-7 h-7 rounded-lg bg-[#ffd700]/15 text-[#ffd700] flex items-center justify-center shrink-0">
+                    <Truck className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-[#ffd700] block">توصيل 5,000 د.ع ثابت</span>
+                    <span className="text-[11px] text-[#8e8e93]">شحن سريع لكافة محافظات العراق الـ 19</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <button
+                  onClick={onShopNow}
+                  className="h-12 px-7 rounded-xl bg-[#ffd700] hover:bg-[#e6c200] text-[#0a0a0a] font-extrabold text-sm flex items-center justify-center gap-2 shadow-[0_2px_15px_rgba(255,215,0,0.35)] active:scale-95 transition-all cursor-pointer"
+                >
+                  <span>تسوق الآن (الدفع عند الاستلام)</span>
+                  <ArrowLeft className="w-4 h-4" />
+                </button>
+
+                <button
+                  onClick={onOpenTracking}
+                  className="h-12 px-5 rounded-xl bg-[#181818] hover:bg-[#222] border border-[#333] text-[#d4af37] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
+                >
+                  <span>تتبع طلبك بالرقم</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Visual Photography Card */}
+            <div className="w-full lg:w-96 rounded-2xl overflow-hidden bg-[#0a0a0a] border border-[#333] shadow-2xl relative group">
+              <div className="relative h-64 sm:h-72 w-full overflow-hidden">
+                <img
+                  src={phonesHeroImg}
+                  alt="M.N.R Flagship Phones Showcase"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/20 to-transparent" />
+                <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-[#ffd700] text-[#0a0a0a] text-xs font-black shadow-md">
+                  أصلي 100% مختوم
+                </div>
+              </div>
+
+              <div className="p-4 bg-[#0e0e0e] border-t border-[#222] flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-bold text-[#f5f5f7]">هواتف آبل وسامسونج الرائدة</h4>
+                  <p className="text-[11px] text-[#8e8e93]">تبدأ من 1,480,000 د.ع مع ضمان سنة</p>
+                </div>
+                <button
+                  onClick={() => onSelectCategory && onSelectCategory('phones')}
+                  className="px-3 py-1.5 rounded-lg bg-[#ffd700]/15 hover:bg-[#ffd700] text-[#ffd700] hover:text-[#0a0a0a] text-xs font-bold transition-all cursor-pointer"
+                >
+                  استعراض الهواتف
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Dual Curated Spotlights: 1. Flagship Phones Spotlight & 2. High-speed GaN Chargers Spotlight */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Spotlight 1: Phones */}
+          <div 
+            onClick={() => onSelectCategory && onSelectCategory('phones')}
+            className="group relative rounded-2xl bg-gradient-to-br from-[#14120c] to-[#0c0c0c] border border-[#2b2518] hover:border-[#ffd700]/60 p-4 sm:p-5 transition-all duration-300 cursor-pointer overflow-hidden shadow-lg"
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div className="space-y-1.5 flex-1">
+                <div className="flex items-center gap-2 text-xs font-bold text-[#ffd700]">
+                  <Smartphone className="w-4 h-4" />
+                  <span>قسم الهواتف الذكية الرائدة</span>
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-[#f5f5f7] group-hover:text-[#ffd700] transition-colors">
+                  iPhone 17 Pro Max & Galaxy S26 Ultra
+                </h3>
+                <p className="text-xs text-[#8e8e93] line-clamp-2">
+                  معالجات A19 Pro و Snapdragon 8 Gen 4، شاشات تيتانيوم 120Hz وكاميرات احترافية مع كفالة رسمية.
+                </p>
+                <div className="pt-2 flex items-baseline gap-2">
+                  <span className="text-xs text-[#8e8e93]">الأسعار تبدأ من:</span>
+                  <span className="text-base font-black text-[#ffd700]">1,480,000 د.ع</span>
+                </div>
+              </div>
+
+              <div className="w-28 sm:w-36 h-28 sm:h-32 rounded-xl overflow-hidden bg-[#070707] border border-[#262626] shrink-0">
+                <img
+                  src={phonesHeroImg}
+                  alt="Phones Showcase"
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
+                />
               </div>
             </div>
           </div>
 
+          {/* Spotlight 2: Chargers & Powerbanks */}
+          <div 
+            onClick={() => onSelectCategory && onSelectCategory('chargers')}
+            className="group relative rounded-2xl bg-gradient-to-br from-[#14120c] to-[#0c0c0c] border border-[#2b2518] hover:border-[#ffd700]/60 p-4 sm:p-5 transition-all duration-300 cursor-pointer overflow-hidden shadow-lg"
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div className="space-y-1.5 flex-1">
+                <div className="flex items-center gap-2 text-xs font-bold text-[#ffd700]">
+                  <Zap className="w-4 h-4" />
+                  <span>قسم الشواحن الذكية و GaN</span>
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-[#f5f5f7] group-hover:text-[#ffd700] transition-colors">
+                  شواحن أنكر وآبل الأصلية فائقة السرعة
+                </h3>
+                <p className="text-xs text-[#8e8e93] line-clamp-2">
+                  تقنيات GaN III بقدرات 35W, 65W, و 120W مع أمان فائق وحماية للبطارية من الحرارة الزائدة.
+                </p>
+                <div className="pt-2 flex items-baseline gap-2">
+                  <span className="text-xs text-[#8e8e93]">الأسعار تبدأ من:</span>
+                  <span className="text-base font-black text-[#ffd700]">45,000 د.ع</span>
+                </div>
+              </div>
+
+              <div className="w-28 sm:w-36 h-28 sm:h-32 rounded-xl overflow-hidden bg-[#070707] border border-[#262626] shrink-0">
+                <img
+                  src={chargersHeroImg}
+                  alt="Chargers Showcase"
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

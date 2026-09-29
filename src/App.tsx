@@ -152,7 +152,7 @@ export default function App() {
     address: string;
     nearestLandmark: string;
     notes?: string;
-    paymentMethod: 'cod' | 'zaincash' | 'card';
+    paymentMethod: 'cod';
   }): Order => {
     const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
     const orderItems = cart.map((item) => ({
@@ -178,7 +178,7 @@ export default function App() {
       deliveryFee: settings.fixedDeliveryFee || 5000,
       total: subtotal + (settings.fixedDeliveryFee || 5000),
       status: 'new',
-      paymentMethod: orderData.paymentMethod,
+      paymentMethod: 'cod',
     });
 
     // Clear cart & close checkout
@@ -244,6 +244,10 @@ export default function App() {
           onShopNow={() => scrollToSection('products-catalog')}
           onExploreProducts={() => scrollToSection('categories')}
           onOpenTracking={() => setIsTrackingOpen(true)}
+          onSelectCategory={(cat) => {
+            setSelectedCategory(cat);
+            scrollToSection('products-catalog');
+          }}
         />
 
         {/* Categories Bar & Live Filter (Organized Section) */}

@@ -181,11 +181,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
               <button
                 onClick={onProceedToCheckout}
-                className="w-full h-12 rounded-xl bg-gradient-to-r from-[#ffd700] via-[#d4af37] to-[#b8860b] text-[#0a0a0a] font-bold text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+                className="w-full h-12 rounded-xl bg-[#ffd700] hover:bg-[#e6c200] text-[#0a0a0a] font-extrabold text-sm flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(255,215,0,0.35)] active:scale-95 transition-all cursor-pointer"
               >
-                <span>متابعة إتمام الطلب (Checkout)</span>
+                <span>متابعة الطلب (الدفع كاش عند الاستلام)</span>
                 <ArrowLeft className="w-4 h-4" />
               </button>
+              <p className="text-[11px] text-[#30d158] text-center font-bold">
+                💵 الدفع كاش عند استلام ومعاينة الطلب في باب بيتك
+              </p>
             </div>
           )}
         </div>

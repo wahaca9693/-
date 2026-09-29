@@ -216,12 +216,17 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                   onClose();
                 }}
                 disabled={isOutOfStock}
-                className="h-12 rounded-xl bg-gradient-to-r from-[#ffd700] via-[#d4af37] to-[#b8860b] text-[#0a0a0a] font-black text-sm flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:brightness-110 active:scale-95 disabled:opacity-40 cursor-pointer"
+                className="h-12 rounded-xl bg-[#ffd700] hover:bg-[#e6c200] text-[#0a0a0a] font-extrabold text-sm flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(255,215,0,0.35)] active:scale-95 disabled:opacity-40 cursor-pointer"
               >
                 <Zap className="w-4 h-4" />
-                <span>شراء الآن</span>
+                <span>اطلب الآن (الدفع كاش)</span>
               </button>
             </div>
+
+            {/* Reassurance text */}
+            <p className="text-[11px] text-[#30d158] text-center pt-1 font-semibold">
+              💵 الدفع نقداً (كاش) عند استلام ومعاينة الطلب • توصيل 5,000 د.ع لكافة المحافظات
+            </p>
           </div>
         </div>
       </div>

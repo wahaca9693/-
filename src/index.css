@@ -1,117 +1,62 @@
 @import "tailwindcss";
 
 @layer utilities {
-  /* Metallic Gold Text Gradient */
+  /* Clean Metallic Gold Accent Text */
   .gold-gradient-text {
-    background: linear-gradient(135deg, #fff3b0 0%, #ffd700 25%, #d4af37 50%, #aa8010 75%, #ffd700 100%);
+    background: linear-gradient(135deg, #fff7c2 0%, #ffd700 40%, #d4af37 80%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   
-  .gold-gradient-subtle {
-    background: linear-gradient(135deg, #f5e088 0%, #d4af37 50%, #997819 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  /* Subtle Modern Glow */
+  .gold-glow {
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.18);
   }
 
-  /* Luxury Gold Glows */
-  .gold-glow-sm {
-    box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
-  }
-
-  .gold-glow-md {
-    box-shadow: 0 0 24px rgba(212, 175, 55, 0.35);
-  }
-
-  .gold-glow-lg {
-    box-shadow: 0 0 40px rgba(212, 175, 55, 0.45);
-  }
-
-  /* Luxury Glassmorphism */
-  .luxury-glass {
-    background: rgba(18, 18, 18, 0.82);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(212, 175, 55, 0.18);
-  }
-
-  .luxury-card {
-    background: linear-gradient(180deg, #141414 0%, #0d0d0d 100%);
-    border: 1px solid rgba(212, 175, 55, 0.15);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  }
-
-  .luxury-card-hover {
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .luxury-card-hover:hover {
-    border-color: rgba(212, 175, 55, 0.45);
-    box-shadow: 0 14px 35px rgba(212, 175, 55, 0.15), 0 0 20px rgba(0, 0, 0, 0.8);
-    transform: translateY(-3px);
-  }
-
-  /* Gold Shimmer Button */
-  .btn-gold {
-    background: linear-gradient(135deg, #e5c158 0%, #d4af37 50%, #b8860b 100%);
-    color: #0d0d0d;
-    font-weight: 700;
+  /* Modern Clean Card */
+  .modern-card {
+    background-color: #121215;
+    border: 1px solid #27272a;
     transition: all 0.25s ease;
   }
 
-  .btn-gold:hover {
-    background: linear-gradient(135deg, #fae27a 0%, #e2be42 50%, #c49413 100%);
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-    transform: scale(1.02);
+  .modern-card:hover {
+    border-color: rgba(212, 175, 55, 0.4);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.08);
   }
 
-  .btn-gold:active {
+  /* Solid Gold Modern Button */
+  .btn-gold-modern {
+    background-color: #d4af37;
+    background-image: linear-gradient(135deg, #ffd700 0%, #d4af37 100%);
+    color: #000000;
+    font-weight: 700;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-gold-modern:hover {
+    background-image: linear-gradient(135deg, #ffe033 0%, #e2be42 100%);
+    box-shadow: 0 4px 18px rgba(212, 175, 55, 0.35);
+    transform: translateY(-1px);
+  }
+
+  .btn-gold-modern:active {
     transform: scale(0.98);
   }
 
-  /* Smooth Navigation & Tab Switch Motion */
+  /* Animation */
   .animate-fade-in-slide {
-    animation: fadeInSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .animate-scale-in {
-    animation: scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fadeInSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 }
 
 @keyframes fadeInSlide {
   0% {
     opacity: 0;
-    transform: translateY(12px) scale(0.99);
+    transform: translateY(8px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
-}
-
-@keyframes scaleIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes shimmerAnimation {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.shimmer-gold {
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.2) 50%, transparent 100%);
-  background-size: 200% 100%;
-  animation: shimmerAnimation 3s infinite;
 }
