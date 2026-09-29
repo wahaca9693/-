@@ -259,41 +259,37 @@ export default function App() {
         </section>
 
         {/* Products Grid Section with Motion Transitions & Controls */}
-        <section id="products-catalog" className="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full scroll-mt-24">
+        <section id="products-catalog" className="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full scroll-mt-24">
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-4 border-b border-[#d4af37]/20 text-right">
+          <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-3 mb-6 pb-3 border-b border-[#222] text-right">
             <div>
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#ffd700] mb-1">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>الكتالوج المعتمد • أسعار رسمية بالدينار العراقي</span>
-              </div>
-              <h2 className="text-xl sm:text-3xl font-black text-[#f5f5f7] flex items-center gap-2">
+              <h2 className="text-xl sm:text-2xl font-bold text-[#f5f5f7] tracking-tight">
                 {selectedCategory === 'all' ? (
-                  <span>جميع المنتجات الفاخرة المتاحة</span>
+                  <span>كافة المنتجات المتوفرة</span>
                 ) : (
-                  <>
-                    <span>{currentCategoryInfo?.emoji}</span>
-                    <span>قسم {currentCategoryInfo?.name}</span>
-                  </>
+                  <span>قسم {currentCategoryInfo?.name}</span>
                 )}
               </h2>
+              <p className="text-xs text-[#8e8e93] mt-0.5">
+                عرض {filteredProducts.length} منتج • جميع الأسعار رسمية ومفصولة بالدينار العراقي (IQD)
+              </p>
             </div>
 
-            {/* Controls: Brand Pills & Sorting Dropdown */}
-            <div className="flex flex-wrap items-center gap-3">
-              {/* Brand Selector Pills */}
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
-                <span className="text-[#99907c] ml-1 shrink-0">الماركة:</span>
+            {/* Controls: Brand Selector & Sorting Dropdown */}
+            <div className="flex flex-wrap items-center gap-2.5">
+              {/* Brand Selector */}
+              <div className="flex items-center gap-1 overflow-x-auto pb-0.5 no-scrollbar text-xs">
+                <span className="text-[#8e8e93] ml-1 shrink-0 text-[11px]">الماركة:</span>
                 {availableBrands.map((brand) => {
                   const isSel = selectedBrand === brand;
                   return (
                     <button
                       key={brand}
                       onClick={() => setSelectedBrand(brand)}
-                      className={`px-3 py-1 rounded-xl text-xs font-bold transition-all ${
+                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                         isSel
-                          ? 'bg-[#ffd700] text-[#0a0a0a] shadow-sm'
-                          : 'bg-[#141414] hover:bg-[#1e1e1e] text-[#a1a1a6] border border-[#d4af37]/20'
+                          ? 'bg-[#ffd700] text-[#0a0a0a]'
+                          : 'bg-[#121212] hover:bg-[#1a1a1a] text-[#8e8e93] hover:text-[#f5f5f7] border border-[#2a2a2a]'
                       }`}
                     >
                       {brand === 'all' ? 'الكل' : brand}
@@ -307,14 +303,14 @@ export default function App() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="h-9 px-3 pr-8 rounded-xl bg-[#141414] border border-[#d4af37]/30 text-xs font-bold text-[#ffd700] focus:outline-none focus:border-[#ffd700] appearance-none cursor-pointer"
+                  className="h-8.5 px-3 pr-7 rounded-lg bg-[#141414] border border-[#333] text-xs font-medium text-[#ffd700] focus:outline-none focus:border-[#ffd700] appearance-none cursor-pointer"
                 >
-                  <option value="featured">الأكثر طلباً (المميز)</option>
+                  <option value="featured">الأكثر طلباً</option>
                   <option value="price-asc">السعر: من الأقل للأعلى</option>
                   <option value="price-desc">السعر: من الأعلى للأقل</option>
                   <option value="rating">الأعلى تقييماً</option>
                 </select>
-                <ArrowUpDown className="absolute top-2.5 right-2.5 w-3.5 h-3.5 text-[#ffd700] pointer-events-none" />
+                <ArrowUpDown className="absolute top-2.5 right-2 w-3 h-3 text-[#ffd700] pointer-events-none" />
               </div>
             </div>
           </div>

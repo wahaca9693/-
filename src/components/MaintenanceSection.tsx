@@ -40,50 +40,47 @@ export const MaintenanceSection: React.FC<MaintenanceSectionProps> = ({ onContac
   ];
 
   return (
-    <section id="maintenance" className="py-14 bg-gradient-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a] border-y border-[#d4af37]/20 relative overflow-hidden">
-      {/* Golden Aura */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#d4af37]/5 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-right">
-        {/* Section Heading */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 pb-4 border-b border-[#d4af37]/20">
+    <section id="maintenance" className="py-12 bg-[#080808] border-y border-[#222] relative overflow-hidden text-right">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Heading with Restrained Typography */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8 pb-3 border-b border-[#222]">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1c180e] border border-[#d4af37]/30 text-xs font-bold text-[#ffd700] mb-2">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#18150c] border border-[#d4af37]/30 text-xs font-bold text-[#ffd700] mb-2">
               <Wrench className="w-3.5 h-3.5" />
               <span>قسم الصيانة التخصصي المعتمد</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-black text-[#f5f5f7]">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#f5f5f7]">
               خدمات وأدوات <span className="gold-gradient-text">صيانة الهاتف</span>
             </h2>
-            <p className="text-xs sm:text-sm text-[#99907c] mt-1">
+            <p className="text-xs text-[#8e8e93] mt-0.5">
               أحدث الأجهزة الرقمية لتبديل الشاشات، صيانة الآي سيات، ومعالجة الأعطال المستعصية
             </p>
           </div>
 
           <div className="text-left sm:text-right">
-            <span className="text-sm font-black gold-gradient-text block">
+            <span className="text-xs sm:text-sm font-bold gold-gradient-text block">
               "ثقتكم .. سر نجاحنا"
             </span>
-            <span className="text-xs text-[#d0c5af]">مركز المنار للموبايل M.N.R</span>
+            <span className="text-[11px] text-[#8e8e93]">مركز المنار للموبايل M.N.R</span>
           </div>
         </div>
 
         {/* 6 Services Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
           {services.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div
                 key={idx}
-                className="p-5 rounded-2xl bg-[#141414] hover:bg-[#1c180e] border border-[#d4af37]/20 hover:border-[#d4af37]/50 transition-all duration-300 shadow-md group"
+                className="p-4 sm:p-5 rounded-2xl bg-[#0f0f0f] border border-[#24221c] hover:border-[#d4af37]/50 transition-all duration-300 shadow-sm group"
               >
-                <div className="w-12 h-12 rounded-xl bg-[#1c1b1b] border border-[#d4af37]/30 flex items-center justify-center text-[#ffd700] mb-3 group-hover:scale-110 transition-transform shadow-sm">
-                  <Icon className="w-6 h-6" />
+                <div className="w-10 h-10 rounded-xl bg-[#16140e] border border-[#d4af37]/25 flex items-center justify-center text-[#ffd700] mb-3 group-hover:scale-105 transition-transform">
+                  <Icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-sm sm:text-base font-bold text-[#f5f5f7] group-hover:text-[#ffd700] transition-colors mb-1">
+                <h3 className="text-sm font-bold text-[#f5f5f7] group-hover:text-[#ffd700] transition-colors mb-1">
                   {item.title}
                 </h3>
-                <p className="text-xs text-[#99907c] leading-relaxed">
+                <p className="text-xs text-[#8e8e93] leading-relaxed">
                   {item.desc}
                 </p>
               </div>
@@ -92,22 +89,22 @@ export const MaintenanceSection: React.FC<MaintenanceSectionProps> = ({ onContac
         </div>
 
         {/* CTA Bar */}
-        <div className="mt-8 p-4 sm:p-6 rounded-2xl bg-[#18150c] border border-[#d4af37]/35 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#ffd700] text-[#0a0a0a] flex items-center justify-center font-black">
-              <Shield className="w-5 h-5" />
+        <div className="mt-6 p-4 rounded-xl bg-[#12100a] border border-[#d4af37]/25 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[#ffd700] text-[#0a0a0a] flex items-center justify-center shrink-0">
+              <Shield className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-[#f5f5f7]">هل يحتاج هاتفك لفحص أو صيانة عاجلة؟</h4>
-              <p className="text-xs text-[#d0c5af]">تواصل مباشرة مع مهندسي مركز المنار لمعاينة جهازك وتقدير التكلفة</p>
+              <span className="font-bold text-[#f5f5f7] block">هل يحتاج هاتفك لفحص أو صيانة عاجلة؟</span>
+              <span className="text-[#8e8e93]">تواصل مباشرة مع مهندسي مركز المنار لمعاينة جهازك وتقدير التكلفة</span>
             </div>
           </div>
 
           <button
             onClick={onContactWhatsApp}
-            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] font-bold text-xs sm:text-sm hover:brightness-110 active:scale-95 transition-all shadow-md cursor-pointer"
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#ffd700] to-[#d4af37] text-[#0a0a0a] font-bold text-xs hover:brightness-105 active:scale-95 transition-all shadow-sm cursor-pointer shrink-0"
           >
-            استشارة فني الصيانة الآن عبر واتساب
+            استشارة فني الصيانة عبر واتساب
           </button>
         </div>
       </div>
