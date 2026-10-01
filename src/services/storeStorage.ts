@@ -111,6 +111,44 @@ class StoreStorageService {
     this.saveProducts(products);
   }
 
+  /** حذف عدة منتجات دفعة واحدة */
+  deleteProducts(ids: string[]): number {
+    const set = new Set(ids);
+    const products = this.getProducts();
+    const remaining = products.filter((p) => !set.has(p.id));
+    const removed = products.length - remaining.length;
+    this.saveProducts(remaining);
+    return removed;
+  }
+
+  /** استبدال كامل للكتالوج (يُستخدم مع الاستيراد) */
+  replaceAllProducts(products: Product[]) {
+    this.saveProducts(products);
+  }
+
+  /** دمج المنتجات المستوردة مع الحالي بدون تكرار المعرّف */
+  mergeProducts(incoming: Product[]): { added: number; updated: number } {
+    const current = this.getProducts();
+    const byId = new Map(current.map((p) => [p.id, p]));
+    let added = 0;
+    let updated = 0;
+
+    for (const product of incoming) {
+      if (byId.has(product.id)) updated += 1;
+      else added += 1;
+      byId.set(product.id, product);
+    }
+
+    this.saveProducts([...byId.values()]);
+    return { added, updated };
+  }
+
+  /** استعادة الكتالوج الأصلي المدموج مع الشيفرة */
+  resetProducts() {
+    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(INITIAL_PRODUCTS));
+    this.emit('products-updated', INITIAL_PRODUCTS);
+  }
+
   // --- ORDERS ---
   getOrders(): Order[] {
     try {
@@ -312,6 +350,35 @@ class StoreStorageService {
   deleteOffer(id: string) {
     const offers = this.getOffers().filter((o) => o.id !== id);
     this.saveOffers(offers);
+  }
+
+  // --- EXPORT / IMPORT ---
+  /** نسخة كاملة من بيانات المتجر للحفظ الاحتياطي */
+  exportSnapshot() {
+    return {
+      meta: {
+        app: 'M.N.R Store',
+        version: 2,
+        exportedAt: new Date().toISOString(),
+      },
+      products: this.getProducts(),
+      orders: this.getOrders(),
+      customers: this.getCustomers(),
+      offers: this.getOffers(),
+      settings: this.getSettings(),
+    };
+  }
+
+  /** استعادة نسخة كاملة (الطلبات والعملاء اختيارية) */
+  importSnapshot(
+    snapshot: Partial<ReturnType<StoreStorageService['exportSnapshot']>>,
+    options: { withOrders?: boolean; withCustomers?: boolean } = {}
+  ) {
+    if (Array.isArray(snapshot.products)) this.saveProducts(snapshot.products);
+    if (Array.isArray(snapshot.offers)) this.saveOffers(snapshot.offers);
+    if (snapshot.settings) this.saveSettings(snapshot.settings);
+    if (options.withOrders && Array.isArray(snapshot.orders)) this.saveOrders(snapshot.orders);
+    if (options.withCustomers && Array.isArray(snapshot.customers)) this.saveCustomers(snapshot.customers);
   }
 
   // --- SETTINGS ---

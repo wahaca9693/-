@@ -4,10 +4,10 @@
    M.N.R — مركز المنار للموبايل
    نظام التصميم الرسمي (Design System)
 
-   الفكرة: "شعاع المنارة" (Beacon)
-   - أساس متدرّج (Canvas) من حبر أزرق داكن جداً وليس أسود ميت
-   - لون العلامة (Brand): indigo → cyan  (للأزرار والحالات النشطة)
-   - اللون الذهبي (Gold): للأسعار وهوية المنار الفاخرة
+   الهوية: Royal Velvet
+   - أساس أرجواني غامق (Velvet Aubergine) بدل الأسود الميت
+   - لون العلامة (Brand): بنفسجي ملكي → وردي التوت  (للأزرار والحالات النشطة)
+   - اللون الذهبي (Champagne): للأسعار وهوية المنار الفاخرة
    - كل المكوّنات تقرأ من Tokens — لا يوجد أي لون مكتوب يدوياً داخل Components
    ========================================================================== */
 
@@ -93,42 +93,42 @@
 :root {
   color-scheme: light;
 
-  --mnr-canvas: #f2f5fb;
-  --mnr-canvas-2: #e8edf7;
+  --mnr-canvas: #fbf8fd;
+  --mnr-canvas-2: #f3edf9;
   --mnr-surface: #ffffff;
-  --mnr-surface-2: #f7f9fd;
-  --mnr-surface-3: #eef2f9;
+  --mnr-surface-2: #faf7fd;
+  --mnr-surface-3: #f2ecf8;
 
-  --mnr-line: #e2e8f3;
-  --mnr-line-2: #cdd6e6;
+  --mnr-line: #e9e0f2;
+  --mnr-line-2: #d5c6e6;
 
-  --mnr-ink: #0b1322;
-  --mnr-ink-2: #4b5771;
-  --mnr-ink-3: #7a879f;
+  --mnr-ink: #1a0f26;
+  --mnr-ink-2: #5c4a6e;
+  --mnr-ink-3: #8c7a9c;
   --mnr-ink-inverse: #ffffff;
 
-  --mnr-brand: #4f46e5;
-  --mnr-brand-2: #0891b2;
-  --mnr-brand-soft: rgba(79, 70, 229, 0.09);
-  --mnr-brand-ink: #4338ca;
+  --mnr-brand: #7c3aed;
+  --mnr-brand-2: #d6437f;
+  --mnr-brand-soft: rgba(124, 58, 237, 0.09);
+  --mnr-brand-ink: #6d28d9;
   --mnr-on-brand: #ffffff;
 
-  --mnr-gold: #9a6f0c;
-  --mnr-gold-soft: rgba(154, 111, 12, 0.1);
+  --mnr-gold: #96701a;
+  --mnr-gold-soft: rgba(150, 112, 26, 0.11);
 
-  --mnr-success: #0f7b45;
-  --mnr-success-soft: rgba(15, 123, 69, 0.1);
-  --mnr-warn: #a45a06;
-  --mnr-warn-soft: rgba(164, 90, 6, 0.1);
-  --mnr-danger: #cc2a1f;
-  --mnr-danger-soft: rgba(204, 42, 31, 0.09);
-  --mnr-info: #046a9e;
-  --mnr-info-soft: rgba(4, 106, 158, 0.1);
+  --mnr-success: #10784a;
+  --mnr-success-soft: rgba(16, 120, 74, 0.1);
+  --mnr-warn: #b06007;
+  --mnr-warn-soft: rgba(176, 96, 7, 0.1);
+  --mnr-danger: #c62b4d;
+  --mnr-danger-soft: rgba(198, 43, 77, 0.09);
+  --mnr-info: #6d28b8;
+  --mnr-info-soft: rgba(109, 40, 184, 0.1);
 
-  --mnr-shadow-soft: 0 1px 2px rgba(11, 19, 34, 0.05);
-  --mnr-shadow-card: 0 1px 2px rgba(11, 19, 34, 0.04), 0 8px 24px -12px rgba(11, 19, 34, 0.16);
-  --mnr-shadow-float: 0 10px 20px -8px rgba(11, 19, 34, 0.18), 0 24px 48px -24px rgba(11, 19, 34, 0.22);
-  --mnr-shadow-glow: 0 0 0 4px rgba(79, 70, 229, 0.16);
+  --mnr-shadow-soft: 0 1px 2px rgba(26, 15, 38, 0.05);
+  --mnr-shadow-card: 0 1px 2px rgba(26, 15, 38, 0.04), 0 10px 28px -14px rgba(76, 29, 149, 0.18);
+  --mnr-shadow-float: 0 12px 24px -10px rgba(26, 15, 38, 0.18), 0 28px 56px -28px rgba(76, 29, 149, 0.26);
+  --mnr-shadow-glow: 0 0 0 4px rgba(124, 58, 237, 0.16);
 }
 
 /* --------------------------------------------------------------------------
@@ -137,42 +137,42 @@
 .dark {
   color-scheme: dark;
 
-  --mnr-canvas: #070a12;
-  --mnr-canvas-2: #0a0e18;
-  --mnr-surface: #0e1422;
-  --mnr-surface-2: #151d2e;
-  --mnr-surface-3: #1d2739;
+  --mnr-canvas: #0c0713;
+  --mnr-canvas-2: #100a19;
+  --mnr-surface: #160e24;
+  --mnr-surface-2: #1f1431;
+  --mnr-surface-3: #2a1b42;
 
-  --mnr-line: #202b41;
-  --mnr-line-2: #2d3a53;
+  --mnr-line: #33214f;
+  --mnr-line-2: #452f68;
 
-  --mnr-ink: #eef2fa;
-  --mnr-ink-2: #a2b0c8;
-  --mnr-ink-3: #6d7b95;
-  --mnr-ink-inverse: #070a12;
+  --mnr-ink: #f6f1fb;
+  --mnr-ink-2: #b7a6c8;
+  --mnr-ink-3: #83719a;
+  --mnr-ink-inverse: #0c0713;
 
-  --mnr-brand: #8b93ff;
-  --mnr-brand-2: #22d3ee;
-  --mnr-brand-soft: rgba(139, 147, 255, 0.14);
-  --mnr-brand-ink: #a5abff;
-  --mnr-on-brand: #08101f;
+  --mnr-brand: #b78cff;
+  --mnr-brand-2: #ff7ab0;
+  --mnr-brand-soft: rgba(183, 140, 255, 0.15);
+  --mnr-brand-ink: #c9a8ff;
+  --mnr-on-brand: #14081f;
 
-  --mnr-gold: #e6b755;
-  --mnr-gold-soft: rgba(230, 183, 85, 0.14);
+  --mnr-gold: #e6bd70;
+  --mnr-gold-soft: rgba(230, 189, 112, 0.15);
 
-  --mnr-success: #34d399;
-  --mnr-success-soft: rgba(52, 211, 153, 0.14);
-  --mnr-warn: #fbbf24;
-  --mnr-warn-soft: rgba(251, 191, 36, 0.14);
-  --mnr-danger: #fb7185;
-  --mnr-danger-soft: rgba(251, 113, 133, 0.14);
-  --mnr-info: #38bdf8;
-  --mnr-info-soft: rgba(56, 189, 248, 0.14);
+  --mnr-success: #4ade9b;
+  --mnr-success-soft: rgba(74, 222, 155, 0.15);
+  --mnr-warn: #fbbf5c;
+  --mnr-warn-soft: rgba(251, 191, 92, 0.15);
+  --mnr-danger: #fb6f92;
+  --mnr-danger-soft: rgba(251, 111, 146, 0.15);
+  --mnr-info: #a78bfa;
+  --mnr-info-soft: rgba(167, 139, 250, 0.15);
 
-  --mnr-shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --mnr-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35), 0 12px 28px -16px rgba(0, 0, 0, 0.7);
-  --mnr-shadow-float: 0 12px 28px -12px rgba(0, 0, 0, 0.7), 0 32px 64px -32px rgba(0, 0, 0, 0.8);
-  --mnr-shadow-glow: 0 0 0 4px rgba(139, 147, 255, 0.22);
+  --mnr-shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --mnr-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 14px 32px -18px rgba(0, 0, 0, 0.85);
+  --mnr-shadow-float: 0 14px 32px -14px rgba(0, 0, 0, 0.8), 0 36px 72px -36px rgba(0, 0, 0, 0.9);
+  --mnr-shadow-glow: 0 0 0 4px rgba(183, 140, 255, 0.24);
 }
 
 /* --------------------------------------------------------------------------
@@ -286,7 +286,7 @@
   }
 
   .mnr-btn-gold {
-    background-image: linear-gradient(135deg, var(--mnr-gold), color-mix(in srgb, var(--mnr-gold) 72%, #ffcf6b));
+    background-image: linear-gradient(135deg, var(--mnr-gold), color-mix(in srgb, var(--mnr-gold) 72%, #ffe0a8));
     color: #17120a;
     box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--mnr-gold) 65%, transparent);
   }

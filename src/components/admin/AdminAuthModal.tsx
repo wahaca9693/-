@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Lock, ShieldCheck, AlertCircle, Delete } from 'lucide-react';
+import { Lock, ShieldCheck, AlertCircle, Delete, Store } from 'lucide-react';
 import { Modal } from '../ui/Modal';
 
 interface AdminAuthModalProps {
@@ -11,6 +11,7 @@ interface AdminAuthModalProps {
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
+/** بوابة الدخول للوحة الإدارة — لوحة أرقام بدل حقل نصّي */
 export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({
   isOpen,
   correctPin,
@@ -39,23 +40,23 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({
         setPin('');
       } else {
         setError(true);
-        setTimeout(() => setPin(''), 600);
+        window.setTimeout(() => setPin(''), 600);
       }
     }
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="sm" disableOutsideClose>
-      <div className="p-6 text-center">
+      <div className="p-6 sm:p-7 text-center">
         <span className="w-16 h-16 mx-auto rounded-2xl bg-brand-soft text-brand-ink grid place-items-center mb-3">
           <Lock className="w-7 h-7" />
         </span>
 
         <h3 className="mnr-h2 text-lg text-ink">لوحة إدارة M.N.R</h3>
-        <p className="text-xs text-ink-3 mt-1">أدخل رمز الأمان المكوّن من 4 أرقام للمتابعة</p>
+        <p className="text-xs text-ink-3 mt-1">أدخل رمز الأمان المكوّن من 4 أرقام</p>
 
         {/* مؤشرات الرمز */}
-        <div className="flex items-center justify-center gap-3 my-6" dir="ltr">
+        <div dir="ltr" className="flex items-center justify-center gap-3 my-6">
           {[0, 1, 2, 3].map((idx) => (
             <span
               key={idx}
@@ -73,7 +74,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({
         {error && (
           <p className="mb-4 flex items-center justify-center gap-1.5 text-xs font-bold text-danger animate-shake">
             <AlertCircle className="w-4 h-4" />
-            رمز PIN غير صحيح — الافتراضي 1234
+            رمز الدخول غير صحيح — حاول مرة أخرى
           </p>
         )}
 
@@ -89,7 +90,14 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({
               {key}
             </button>
           ))}
-          <button type="button" onClick={() => { setPin(''); setError(false); }} className="mnr-btn mnr-btn-ghost h-12 text-xs">
+          <button
+            type="button"
+            onClick={() => {
+              setPin('');
+              setError(false);
+            }}
+            className="mnr-btn mnr-btn-ghost h-12 text-xs"
+          >
             مسح
           </button>
           <button type="button" onClick={() => press('0')} className="mnr-btn mnr-btn-soft h-12 mnr-num text-lg">
@@ -109,8 +117,17 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({
         </div>
 
         <p className="mt-5 flex items-center justify-center gap-1.5 text-[11px] text-ink-3">
-          <ShieldCheck className="w-3.5 h-3.5" />
-          الرمز الافتراضي <span className="mnr-num font-bold text-brand-ink">1234</span> — يمكن تغييره من الإعدادات
+          {correctPin === '1234' ? (
+            <>
+              <ShieldCheck className="w-3.5 h-3.5" />
+              الرمز الافتراضي <span className="mnr-num font-bold text-brand-ink">1234</span> — غيّره من تبويب الإعدادات
+            </>
+          ) : (
+            <>
+              <Store className="w-3.5 h-3.5" />
+              رمز مخصّص — غيّره من تبويب «إعدادات المتجر»
+            </>
+          )}
         </p>
       </div>
     </Modal>

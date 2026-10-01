@@ -3,6 +3,9 @@ import { CartItem } from '../types/store';
 import { Trash2, ShoppingBag, ArrowLeft, Plus, Minus, Truck, Banknote, Package } from 'lucide-react';
 import { Drawer } from './ui/Drawer';
 import { formatIQD } from '../lib/format';
+import { deliveryService } from '../services/deliveryService';
+import { IRAQ_GOVERNORATES } from '../data/initialData';
+import { MapPin, Clock } from 'lucide-react';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -13,6 +16,8 @@ interface CartDrawerProps {
   onRemoveItem: (productId: string) => void;
   onClearCart: () => void;
   onProceedToCheckout: () => void;
+  governorate: string;
+  onSelectGovernorate: (governorate: string) => void;
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -24,10 +29,16 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onRemoveItem,
   onClearCart,
   onProceedToCheckout,
+  governorate,
+  onSelectGovernorate,
 }) => {
   const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const total = cart.length > 0 ? subtotal + deliveryFee : 0;
   const itemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  // تقدير أجور التوصيل حسب المحافظة المختارة
+  const quote = deliveryService.quote(governorate, subtotal);
+  const fee = quote.available ? quote.fee : deliveryFee;
+  const total = cart.length > 0 ? subtotal + fee : 0;
 
   return (
     <Drawer
@@ -39,6 +50,26 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
       footer={
         cart.length > 0 && (
           <div className="space-y-3.5">
+            {/* اختيار المحافظة لمعرفة أجور التوصيل قبل الدفع */}
+            <div>
+              <label className="mnr-label flex items-center gap-1.5" htmlFor="cart-gov">
+                <MapPin className="w-3.5 h-3.5" />
+                المحافظة للتوصيل
+              </label>
+              <select
+                id="cart-gov"
+                value={governorate}
+                onChange={(e) => onSelectGovernorate(e.target.value)}
+                className="mnr-field h-10"
+              >
+                {IRAQ_GOVERNORATES.map((gov) => (
+                  <option key={gov} value={gov}>
+                    {gov}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <dl className="space-y-2 text-xs">
               <div className="flex justify-between">
                 <dt className="text-ink-2">مجموع المنتجات</dt>
@@ -47,17 +78,32 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               <div className="flex justify-between items-center">
                 <dt className="text-ink-2 flex items-center gap-1.5">
                   <Truck className="w-3.5 h-3.5 text-brand-ink" />
-                  أجور التوصيل الثابتة
+                  أجور التوصيل — {governorate}
                 </dt>
-                <dd className="font-extrabold text-brand-ink mnr-num">{formatIQD(deliveryFee)}</dd>
+                <dd className={`font-extrabold mnr-num ${quote.free ? 'text-success' : 'text-brand-ink'}`}>
+                  {quote.free ? 'مجاني' : formatIQD(fee)}
+                </dd>
               </div>
+              {quote.etaDays > 0 && (
+                <div className="flex justify-between items-center">
+                  <dt className="text-ink-2 flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-ink-3" />
+                    الوصول المتوقع
+                  </dt>
+                  <dd className="text-ink-2 font-bold">خلال {quote.etaDays} يوم</dd>
+                </div>
+              )}
               <div className="pt-2.5 border-t border-line flex justify-between items-baseline">
                 <dt className="mnr-h2 text-sm text-ink">المجموع النهائي</dt>
                 <dd className="text-xl font-extrabold text-gold mnr-num">{formatIQD(total)}</dd>
               </div>
             </dl>
 
-            <button type="button" onClick={onProceedToCheckout} className="mnr-btn mnr-btn-primary w-full h-12">
+            <button
+              type="button"
+              onClick={onProceedToCheckout}
+              className="mnr-btn mnr-btn-primary w-full h-12"
+            >
               <span>متابعة الطلب</span>
               <ArrowLeft className="w-4 h-4" />
             </button>

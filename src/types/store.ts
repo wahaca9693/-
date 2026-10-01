@@ -110,3 +110,26 @@ export interface StoreSettings {
   adminPin: string; // default "1234"
   audioNotifications: boolean;
 }
+
+/** منطقة توصيل بمحافظة واحدة */
+export interface DeliveryZone {
+  governorate: string;
+  fee: number;
+  /** 0 = لا يوجد شحن مجاني لهذه المنطقة */
+  freeAbove: number;
+  /** مدة التوصيل التقديرية بالأيام */
+  etaDays: number;
+  /** تفعيل/تعطيل التوصيل لهذه المحافظة */
+  enabled: boolean;
+}
+
+export interface DeliverySettings {
+  /** أجور التوصيل الافتراضية للمحافظات غير المعرّفة */
+  defaultFee: number;
+  defaultEtaDays: number;
+  /** عند تجاوز هذا المبلغ يصبح التوصيل مجانياً لكل المحافظات (0 = معطّل) */
+  freeShippingThreshold: number;
+  /** هل يُطلب الدفع قبل الشحن (نقداً عند الاستلام دائماً متاح) */
+  allowCashOnDelivery: boolean;
+  zones: DeliveryZone[];
+}

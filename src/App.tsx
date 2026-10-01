@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Product, ProductCategory, CartItem, Order } from './types/store';
 import { storeStorage } from './services/storeStorage';
-import { CATEGORIES_LIST } from './data/initialData';
+import { CATEGORIES_LIST, IRAQ_GOVERNORATES } from './data/initialData';
+import { deliveryService } from './services/deliveryService';
 import { useTheme } from './hooks/useTheme';
 
 import { Navbar } from './components/Navbar';
@@ -16,13 +17,14 @@ import { OrderTrackingModal } from './components/OrderTrackingModal';
 import { WishlistDrawer } from './components/WishlistDrawer';
 import { SearchModal } from './components/SearchModal';
 import { MaintenanceSection } from './components/MaintenanceSection';
+import { WhyUsSection } from './components/WhyUsSection';
 import { OffersSection } from './components/OffersSection';
 import { AboutContactSection } from './components/AboutContactSection';
 import { Footer } from './components/Footer';
 import { LoadingScreen } from './components/LoadingScreen';
 import { MobileBottomNav } from './components/MobileBottomNav';
-import { AdminAuthModal } from './components/Admin/AdminAuthModal';
-import { AdminDashboard } from './components/Admin/AdminDashboard';
+import { AdminAuthModal } from './components/admin/AdminAuthModal';
+import { AdminDashboard } from './components/admin/AdminDashboard';
 import { SectionHeader } from './components/ui/SectionHeader';
 
 import { CheckCircle2, LayoutGrid, PackageSearch, RotateCcw } from 'lucide-react';
@@ -41,6 +43,7 @@ const SORTS: { value: SortBy; label: string }[] = [
 export default function App() {
   const { theme, toggleTheme } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
+  const [checkoutGovernorate, setCheckoutGovernorate] = useState(IRAQ_GOVERNORATES[0]);
 
   /* ---------------------------- البيانات ---------------------------- */
   const [products, setProducts] = useState<Product[]>(() => storeStorage.getProducts());
@@ -67,7 +70,7 @@ export default function App() {
   const [successOrder, setSuccessOrder] = useState<Order | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
-  const deliveryFee = settings.fixedDeliveryFee || 5000;
+  const deliveryFee = deliveryService.quote(checkoutGovernorate, 0).fee || settings.fixedDeliveryFee || 5000;
 
   /* ------------------------ مزامنة التخزين ------------------------ */
   useEffect(() => {
@@ -312,6 +315,8 @@ export default function App() {
           }}
         />
 
+        <WhyUsSection />
+
         <MaintenanceSection
           onContactWhatsApp={() =>
             window.open(
@@ -358,6 +363,8 @@ export default function App() {
         onUpdateQuantity={storeStorage.updateCartQuantity}
         onRemoveItem={storeStorage.removeFromCart}
         onClearCart={storeStorage.clearCart}
+        governorate={checkoutGovernorate}
+        onSelectGovernorate={setCheckoutGovernorate}
         onProceedToCheckout={() => {
           setIsCartOpen(false);
           setIsCheckoutOpen(true);
